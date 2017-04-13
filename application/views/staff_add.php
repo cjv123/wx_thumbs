@@ -45,42 +45,34 @@
           </div>-->
       </div><!--右侧开始--> 
 <div class="layout-main">
-    <div class="layout-block-header box ">
-       <div class="info">
-                
-         <!--<h2 style="float:left;">账户概况</h2><span style="float:left; margin-left:10px;"></span>-->
-       </div>
-       <div class="overviewoptimizeadvice index_gk">
-            <table width="100%" border="0">
-            <tbody>
-                <tr class="t2">
-                <!--<td width="10%" class="t3">账户类型:<td>-->
-                </tr>
-            </tbody>
-            </table>
-            
-       </div>
-    </div>
+  
     <div class="box">
-        <h3>标题</h3>    
+        <h3>员工信息</h3>    
         <div class="ui-table-row">
             <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                <tr>
-                    <td class="t5" >
-                    <!-- <form name="form" method="post" action="/?a=index" >
-                         <div class="search">
-                            <span>单日访客：</span>
-                            <input type="text" class="Wdate ipt" readonly name="canvas_day" value="2015-04-18" readonly="readonly" onclick="WdatePicker({minDate:'2015-03-20',maxDate:'%y-%M-%d'})"><input type="submit" value="查看" class="ufi-button bt" style="height:25px;"/>
-                         </div>
-                    </form> -->
+                <tr class="t1">
+                    <td width="70"><span class="title">姓名</span></td>
+                    <td width="650"><input type="text" class="input text2"  value="" placeholder="最多20个汉字" maxlength="20"></td>
+                    <td style="vertical-align:inherit"><span class="zhu"></span></td>
+                </tr>
+                <tr class="t1">
+                    <td width="70"><span class="title">职位</span></td>
+                    <td width="650"><input type="text" class="input text2"  value="" placeholder="最多20个汉字" maxlength="20"></td>
+                    <td style="vertical-align:inherit"><span class="zhu"></span></td>
+                </tr>
+                <tr class="t1">
+                    <td width="70"><span class="title">所在分店</span></td>
+                    <td width="650">
+                        <select name="" id="">
+                            <option value=""></option>
+                        </select>  
                     </td>
-                    <td class="lj t4" width="18%" style="text-align:center;text-indent:0px;"></td>
-                 </tr>
+                    <td style="vertical-align:inherit"><span class="zhu"></span></td>
+                </tr>
             </table> 
-                 
-            <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                <tr><td class="t5"><div id="index_canvas" style="text-align:center"><canvas id="myChart" width="800" height="373"></canvas></div></td></tr>
-          </table>
+             <div class="submit-box">
+                  <input name="submit" value="确定保存" tabindex="3" onclick="" type="submit" class="ufi-button" />
+            </div>
         </div>
 
     </div>

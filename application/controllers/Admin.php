@@ -6,15 +6,14 @@ class Admin extends CI_Controller{
 	{
 		echo "admin";
 	}
-
          
 	public function admin_home()
 	{
-		$this->load->view("admin_home");
 	}
 
-	public function user_add()
+	public function staff_add()
 	{
 			
+		$this->load->view("staff_add");
 	}
 }
