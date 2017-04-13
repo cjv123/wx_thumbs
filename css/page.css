@@ -1,0 +1,86 @@
+/*分页样式定义开始*/
+#pageDiv{
+	margin-left: 280px;
+	margin-top: 50px;
+	text-align:left;
+}
+#inpageDiv{
+	margin-left: 200px;
+	margin-top: 50px;
+	text-align:left;
+}
+.p_bar {
+	font: 12px Tahoma, Verdana;
+	margin: 1px 0px;
+	clear: both;
+}
+.p_bar a {
+	float: left;
+	padding: 1px 4px;
+	font-size: 12px;
+	text-decoration: none;
+	color: #154BA0;
+}
+.p_input {
+	background-color: #F7F8FA;
+	border: 1px solid #C6C6C6;
+	padding: 0px;
+	width: 25px;
+	height: 16px;
+	position:relative;
+    top:0px;
+    font:bold 12px/14px verdana;
+}
+.p_total {
+	background-color: #F7F8FA;
+	border: 1px solid #C6C6C6;
+	border-right: 0px solid #C6C6C6;
+	font:bold 12px/14px verdana;
+}
+.p_pages {
+	background-color: #F7F8FA;
+	border: 1px solid #C6C6C6;
+	margin-right: 1px;
+	vertical-align: middle;
+	font:bold 12px/14px verdana;
+}
+.p_num {
+	padding:1px 4px 1px;
+	border:1px solid #C6C6C6;
+	margin:0 1px 0 0;
+	text-align:center;
+	text-decoration:none;
+	font:normal 12px verdana;
+	background-color: #FFFFFF;
+}
+a:hover.p_num {
+	background-color: #F5FBFF;
+	border: 1px solid #C6C6C6;
+	text-decoration: none;
+	font-weight: bold;
+}
+.p_redirect {
+	padding:1px 4px 1px;
+	border:1px solid #C6C6C6;
+	margin:0 1px 0 0;
+	text-align:center;
+	text-decoration:none;
+	font:normal 12px verdana;
+	background-color: #FFFFFF;
+}
+a:hover.p_redirect {
+	background-color: #F5FBFF;
+	border: 1px solid #C6C6C6;
+	text-decoration: none;
+}
+.p_curpage {
+	background-color: #FFFFD9;
+	color: #92A05A !important;
+	padding:1px 4px 1px;
+	border:1px solid #C6C6C6;
+	margin:0 1px 0 0;
+	text-align:center;
+	text-decoration:none;
+	font:bold 12px/14px verdana;
+}
+/*分页样式定义结束*/
