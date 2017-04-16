@@ -19,8 +19,8 @@
     </div>
     <div class="toolbar">
       <ul>
-        <li class="active"><a href="#">员工</a></li>
-        <li><a href="#">分店</a></li>
+        <li><a href="/admin/staff_list">员工</a></li>
+        <li class="active"><a href="/admin/shop_list">分店</a></li>
         <li><a href="#">后台管理员</a></li>
         <li>
           <a href="#"></a>
@@ -39,8 +39,8 @@
       <div class="layout-sidebar">
         <div class="box">
           <ul class="ui-list leftclick">
-            <li class="active"><a href="#">添加员工</a></li>
-            <li><a href="#">员工列表</a></li>
+            <li><a href="/admin/shop_list">分店列表</a></li>
+            <li class="active"><a href="/admin/shop_add">添加分店</a></li>
           </ul>
         </div>
 
@@ -62,7 +62,7 @@
                 <tr class="t1">
                   <td width="70"><span class="title">分店名称</span></td>
                   <td width="650">
-                    <input name="name" type="text" class="input text2" value="" placeholder="最多20个汉字" maxlength="20">
+                    <input name="name" id="name" type="text" class="input text2" value="" placeholder="最多20个汉字" maxlength="20">
                   </td>
                   <td style="vertical-align:inherit"><span class="zhu"></span></td>
                 </tr>
@@ -77,6 +77,8 @@
             </form>
             <div class="submit-box">
               <input name="submit" value="确定保存" tabindex="3" onclick="onSubmit(this)" type="submit" class="ufi-button" />
+              <span style="display:none" id="loading"><img width="20" height="20" src="/images/loading.gif" alt=""></span>
+              <span id="alert"><span>
             </div>
           </div>
 
@@ -96,10 +98,25 @@
   <script type="text/javascript">
     function onSubmit(button) {
       $(button).attr('disabled', "true");
+      $("#loading").show();
+      $("#alert").html("");
       $.post('/admin/shop_add_seq', $("#shop_form").serialize(), function(data) {
         $(button).removeAttr("disabled");
-        alert(data);
-      });
+        $("#loading").hide();
+        $("#alert").html(data.msg);
+        if (data.ret==0)
+        {
+          $("#name").val("");
+          $("#alert").css('color','#00ff00');
+        }
+        else
+        {
+          $("#alert").css('color','#ff0000');
+        }
+        setTimeout(function() {
+          $("#alert").html("");
+        }, 1500);
+      },'json');
     }
   </script>
 

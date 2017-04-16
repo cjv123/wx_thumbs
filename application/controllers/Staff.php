@@ -5,7 +5,6 @@ class Staff extends CI_Controller{
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model("StaffModel");
 	}
 
 	public function index()
@@ -13,27 +12,32 @@ class Staff extends CI_Controller{
 		echo "staff";
 	}
 
-	public function thumb($staffId)
+	public function thumb($staff_id)
 	{
-		$view_data = $this->staffmodel->staff_view();
-		$this->load->view("staff_view",$view_data);
+		if ($staff_id=="")
+		{
+			return;
+		}
+		$this->load->model("StaffModel");
+		// $view_data = $this->staffmodel->staff_view();
+		$this->load->view("staff_public_view");
+	}
+	
+	public function thumb_req()
+	{
+		$star = $this->input->post("star");
+		$text = $this->input->post("text");
+		$this->load->model("commentmodel");
+		$ret = $this->commentmodel->comment_add($star,$text);
+		echo $ret;
 	}
 
-	public function staffs_list($page,$searchName)
+	public function staff_list($page,$searchName)
 	{
 		$per_page=10;
 
-	 	$data["staff_list"] = $this->staffmodel->staff_list($page,$per_page,$searchName);
-       //分页类
-        $data["total"]=$total=$this->user_model->getUserCount(false);
-        $params=array('total'=>$total,'per_page'=>$per_page,'page'=>$page);
-
-		$this->load->library('Page_cjv',$params);
-
-        $this->page_cjv->url=BASEURL."/user/user_list/";
-        $data["pager"]=$this->page_cjv->show();
-        $data["page"]=$page;
-		
-		$this->load->view("staffs_list",$data);
+	 	$data["staff_list"] = $this->staffmodel->staff_list($page,1000,$searchName);
+       
+		$this->load->view("staff_public_list");
 	}
 }

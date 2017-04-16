@@ -52,7 +52,7 @@ class Page_cjv{
      * @param object $db
      * @access public
      */
-    function Page_cjv($params) {
+    function __construct($params) {
 		//$this->url      = $url;
 	    $this->pagesize = $params['per_page'];
 		$this->total      = $params['total'];

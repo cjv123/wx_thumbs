@@ -19,8 +19,8 @@
     </div>
     <div class="toolbar">
       <ul>
-        <li class="active"><a href="/admin/staff_list">员工</a></li>
-        <li><a href="/admin/shop_list">分店</a></li>
+        <li><a href="#">员工</a></li>
+        <li class="active"><a href="/admin/shop_list">分店</a></li>
         <li><a href="#">后台管理员</a></li>
         <li>
           <a href="#"></a>
@@ -39,51 +39,33 @@
       <div class="layout-sidebar">
         <div class="box">
           <ul class="ui-list leftclick">
-            <li><a href="/admin/staff_list">员工列表</a></li>
-            <li class="active"><a href="/admin/staff_add">添加员工</a></li>
+            <!--<li class="active"><a href="/admin/shop_add">添加分店</a></li>-->
+            <li><a href="/admin/shop_list">分店列表</a></li>
           </ul>
         </div>
-
-        <!--<div class="box">
-<h3>帮助</h3>
-<ul class="ui-list">
-<li><a href="#">客服热线：</a></li>
-</ul>
-</div>-->
       </div>
       <!--右侧开始-->
       <div class="layout-main">
 
         <div class="box">
-          <h3>添加员工</h3>
+          <h3>编辑分店</h3>
           <div class="ui-table-row">
-            <form action="" id="staff_form">
+            <form action="" id="shop_form">
               <table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr class="t1">
-                  <td width="70"><span class="title">姓名</span></td>
+                  <td width="70"><span class="title">分店名称</span></td>
                   <td width="650">
-                    <input name="name" id="name" type="text" class="input text2" value="" placeholder="最多20个汉字" maxlength="20">
+                    <input name="name" id="name" type="text" class="input text2" value="<?=$name?>" placeholder="最多20个汉字" maxlength="20">
                   </td>
                   <td style="vertical-align:inherit"><span class="zhu"></span></td>
                 </tr>
                 <!--<tr class="t1">
-                  <td width="70"><span class="title">职位</span></td>
+                  <td width="70"><span class="title">分店描述</span></td>
                   <td width="650">
-                    <input type="text" name="job" class="input text2" value="" placeholder="最多20个汉字" maxlength="20">
+                    <input type="text" name="des" class="input text2" value="" placeholder="最多20个汉字" maxlength="20">
                   </td>
                   <td style="vertical-align:inherit"><span class="zhu"></span></td>
                 </tr>-->
-                <tr class="t1">
-                  <td width="70"><span class="title">所在分店</span></td>
-                  <td width="650">
-                    <select name="shop" id="">
-                      <?php foreach($shop_list as $shop){?>
-                      <option value="<?=$shop['id']?>"><?=$shop["name"]?></option>
-                      <?php }?>
-                    </select>
-                  </td>
-                  <td style="vertical-align:inherit"><span class="zhu"></span></td>
-                </tr>
               </table>
             </form>
             <div class="submit-box">
@@ -107,18 +89,16 @@
   <div class="jq_tsc"></div>
 
   <script type="text/javascript">
-    
     function onSubmit(button) {
       $(button).attr('disabled', "true");
       $("#loading").show();
       $("#alert").html("");
-      $.post('/admin/staff_add_req', $("#staff_form").serialize(), function(data) {
+      $.post('/admin/shop_edit_req/'+<?=$id?>, $("#shop_form").serialize(), function(data) {
         $(button).removeAttr("disabled");
         $("#loading").hide();
         $("#alert").html(data.msg);
         if (data.ret==0)
         {
-          $("#name").val("");
           $("#alert").css('color','#00ff00');
         }
         else

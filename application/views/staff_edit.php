@@ -40,29 +40,22 @@
         <div class="box">
           <ul class="ui-list leftclick">
             <li><a href="/admin/staff_list">员工列表</a></li>
-            <li class="active"><a href="/admin/staff_add">添加员工</a></li>
+            <!--<li class="active"><a href="/admin/staff_add">添加员工</a></li>-->
           </ul>
         </div>
-
-        <!--<div class="box">
-<h3>帮助</h3>
-<ul class="ui-list">
-<li><a href="#">客服热线：</a></li>
-</ul>
-</div>-->
       </div>
       <!--右侧开始-->
       <div class="layout-main">
 
         <div class="box">
-          <h3>添加员工</h3>
+          <h3>编辑员工</h3>
           <div class="ui-table-row">
             <form action="" id="staff_form">
               <table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr class="t1">
                   <td width="70"><span class="title">姓名</span></td>
                   <td width="650">
-                    <input name="name" id="name" type="text" class="input text2" value="" placeholder="最多20个汉字" maxlength="20">
+                    <input name="name" id="name" type="text" class="input text2" value="<?=$name?>" placeholder="最多20个汉字" maxlength="20">
                   </td>
                   <td style="vertical-align:inherit"><span class="zhu"></span></td>
                 </tr>
@@ -78,7 +71,7 @@
                   <td width="650">
                     <select name="shop" id="">
                       <?php foreach($shop_list as $shop){?>
-                      <option value="<?=$shop['id']?>"><?=$shop["name"]?></option>
+                      <option value="<?=$shop['id']?>" <?=($shop["id"]==$shop_id)?"selected":""?> ><?=$shop["name"]?></option>
                       <?php }?>
                     </select>
                   </td>
@@ -112,13 +105,12 @@
       $(button).attr('disabled', "true");
       $("#loading").show();
       $("#alert").html("");
-      $.post('/admin/staff_add_req', $("#staff_form").serialize(), function(data) {
+      $.post('/admin/staff_edit_req/'+<?=$staff_id?>, $("#staff_form").serialize(), function(data) {
         $(button).removeAttr("disabled");
         $("#loading").hide();
         $("#alert").html(data.msg);
         if (data.ret==0)
         {
-          $("#name").val("");
           $("#alert").css('color','#00ff00');
         }
         else
