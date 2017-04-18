@@ -58,8 +58,8 @@
                 <select id="shop" name="shop">
                     <option value="">所有<option>
                     <?php foreach($shop_list as $row){?>
-                    <option value="<?=$row['id']?>" <?=($row['id']==$shop_id)?"selected":"" ?>><?=$row["name"]?><option>
-                    <?}?>
+                    <option value="<?=$row['id']?>" <?=($row["id"]==$shop_id)?"selected":"" ?> ><?=$row["name"]?><option>
+                    <?php }?>
                 </select>
                 <span class="am-form-caret"></span>
             </div>

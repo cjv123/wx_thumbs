@@ -9,7 +9,7 @@ class Staff extends CI_Controller{
 
 	public function index()
 	{
-		echo "staff";
+		// echo "staff";
 	}
 
 	public function thumb($staff_id)

@@ -29,7 +29,7 @@
     </div>
     <div class="toolbar" style="float:right">
       <ul>
-        <li><a href="#">安全退出</a></li>
+        <li><a href="/admin/logout">安全退出</a></li>
       </ul>
     </div>
   </div>

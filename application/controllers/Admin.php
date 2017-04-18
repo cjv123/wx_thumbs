@@ -5,6 +5,14 @@ class Admin extends CI_Controller{
     public function __construct()
     {
         parent::__construct();
+        $ctrname=$this->uri->segment(2);
+        if ($ctrname==null || $ctrname=="index" || $ctrname=="" || $ctrname=="login_check")
+		 	return;
+
+        if (!isset($_SESSION["admin_id"]))
+        {
+            header("Location:/admin");
+        }
     }
     
     public function index()
@@ -144,13 +152,28 @@ class Admin extends CI_Controller{
     
     public function staff_view_qrcode($id)
     {
-        $url = "http://".$_SERVER['SERVER_NAME']."/staff/thumb/".$id;
+        $url = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/staff/thumb/".$id;
         
         require_once ("phpqrcode.php");
         $value=$url;
         $errorCorrectionLevel = "L";
-        $matrixPointSize = "10";
+        $matrixPointSize = "7";
         QRcode::png($value, false, $errorCorrectionLevel, $matrixPointSize);
+    }
+    
+    public function make_all_qrcode($shop_id="")
+    {
+        require_once ("phpqrcode.php");
+        $this->load->model("staffmodel"); 
+        $list = $this->staffmodel->staff_list(1,1000,"",$shop_id);
+        foreach($list as $row)        
+        {
+            $url = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/staff/thumb/".$row["id"];
+            $value=$url;
+            $errorCorrectionLevel = "L";
+            $matrixPointSize = "7";
+            QRcode::png($value, "tmp/qrcode_".$row["id"].".png", $errorCorrectionLevel, $matrixPointSize);
+        }
     }
     
     public function shop_add()
@@ -395,7 +418,7 @@ class Admin extends CI_Controller{
 
     public function login_check()
     {
-        $login_name=$this->input->post("login_name");
+        $login_name="admin";
         $passwd = $this->input->post("passwd");
 
         $this->load->model("adminmodel");
@@ -403,11 +426,19 @@ class Admin extends CI_Controller{
         $input_admin = md5($passwd);
         if ($input_admin == $admin_info["passwd"])
         {
+            $_SESSION["admin_id"]=$admin_info["id"];
+            $_SESSION["admin_login_name"]=$admin_info["login_name"];
             echo "<script>parent.location='/admin/staff_list'</script>";
         }
         else
         {
-            echo "<script>alert('密码或账户错误！')</script>";
+            echo "<script>alert('密码错误！')</script>";
         }
+    }
+    
+    public function logout()
+    {
+        session_destroy();
+        header("Location:/admin");
     }
 }

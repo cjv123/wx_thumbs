@@ -22,10 +22,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <div id="darkbannerwrap" class="png"></div>
             <fieldset>
             <form method="post" name="login" id="loginform" target="hiddenaction"  action="/admin/login_check">
-            	<p>
+               <!-- <p>
             		<label class="loginlabel">用户名:</label>
             		<input class="logininput" name="login_name" id="username" type="text">
-                </p>
+                </p>-->
                 <p>
                     <label class="loginlabel">密　码:</label>
                     <span>

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<!-- saved from url=(0034)http://my.jingzhunapp.com/?a=index -->
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
@@ -30,7 +29,7 @@
     </div>
     <div class="toolbar" style="float:right">
       <ul>
-        <li><a href="#">安全退出</a></li>
+        <li><a href="/admin/logout">安全退出</a></li>
       </ul>
     </div>
   </div>
@@ -76,7 +75,7 @@
                                 <td><span class="gray">姓名</span></td>
                                 <td><span class="gray">所在分店</span></td>
                                 <td><span class="gray">平均评分</span></td>
-                                <td width="19%"><span class="gray">操作</span></td>
+                                <td width="23%"><span class="gray">操作</span></td>
                               </tr>
 
                               <?php  foreach ($list as $index=>$item){?>
@@ -120,8 +119,8 @@
       <div stype="padding-left:100px;">
         <div>链接地址:</div>
         <div id="link_text"></div>
+        <div class="ajax"></div>
       </div>
-      <div class="ajax"></div>
     </div>
 
   <script type="text/javascript">

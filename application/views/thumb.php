@@ -119,6 +119,9 @@
             
           </div>
           <p><?=$row['text']?></p>
+          <?php if($row["comment_admin"]){?>
+          <blockquote>店长回复:<?=$row["comment_admin"]?></blockquote>
+          <?php }?>
         </div>
       </div>
     </li>
