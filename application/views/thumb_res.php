@@ -7,7 +7,7 @@
   <meta name="keywords" content="">
   <meta name="viewport"
         content="width=device-width, initial-scale=1">
-  <title>点赞</title>
+  <title>感谢提交</title>
 
   <!-- Set render engine for 360 browser -->
   <meta name="renderer" content="webkit">
@@ -39,12 +39,6 @@
   <link rel="stylesheet" href="/assets/css/amazeui.min.css">
   <link rel="stylesheet" href="/assets/css/app.css">
 
-  <style type="text/css">
-  a,img{border:0;}
-  img{vertical-align:middle;}
-  #QuacorGrading input{background:url(/images/grading.png) no-repeat scroll right center;cursor:pointer;height:30px;width:30px;padding:0;border:0;}
-  #QuacorGrading span{position: relative;top:5px;}
-</style>
 
 </head>
 <body>
@@ -57,13 +51,9 @@
 <!-- 页面内容 开发时删除 -->
 <div class="am-g am-g-fixed am-margin-top">
   <div class="am-u-sm-12">
-
-    <ul class="am-link-muted">
-        <li><a href=""><a></li>
-    </ul>
-
+    <h1><?php if ($ret){echo "提交成功！";}else{echo "提交失败！可能数据库出现异常!";}?></h1>
+    <a href="/staff/staff_list">还可以对其他员工点赞</a>
   </div>
-
 </div>
 
 
@@ -88,8 +78,7 @@
 <script src="/assets/js/amazeui.min.js"></script>
 
 <script type="text/javascript">
-  
-    
+
 </script>
 
 </body>

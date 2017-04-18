@@ -43,44 +43,33 @@
             <!--<li class="active"><a href="/admin/staff_add">添加员工</a></li>-->
           </ul>
         </div>
+
+        <!--<div class="box">
+<h3>帮助</h3>
+<ul class="ui-list">
+<li><a href="#">客服热线：</a></li>
+</ul>
+</div>-->
       </div>
       <!--右侧开始-->
       <div class="layout-main">
 
         <div class="box">
-          <h3>编辑员工</h3>
+          <h3>回复评论</h3>
           <div class="ui-table-row">
-            <form action="" id="staff_form">
+            <form action="" id="comment_form">
               <table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr class="t1">
-                  <td width="70"><span class="title">姓名</span></td>
+                  <td width="70"><span class="title">回复内容</span></td>
                   <td width="650">
-                    <input name="name" id="name" type="text" class="input text2" value="<?=$name?>" placeholder="最多20个汉字" maxlength="20">
-                  </td>
-                  <td style="vertical-align:inherit"><span class="zhu"></span></td>
-                </tr>
-                <!--<tr class="t1">
-                  <td width="70"><span class="title">职位</span></td>
-                  <td width="650">
-                    <input type="text" name="job" class="input text2" value="" placeholder="最多20个汉字" maxlength="20">
-                  </td>
-                  <td style="vertical-align:inherit"><span class="zhu"></span></td>
-                </tr>-->
-                <tr class="t1">
-                  <td width="70"><span class="title">所在分店</span></td>
-                  <td width="650">
-                    <select name="shop" id="">
-                      <?php foreach($shop_list as $shop){?>
-                      <option value="<?=$shop['id']?>" <?=($shop["id"]==$shop_id)?"selected":""?> ><?=$shop["name"]?></option>
-                      <?php }?>
-                    </select>
+                    <textarea style="width:700px;height:200px;visibility:hidden;" name="comment"></textarea>
                   </td>
                   <td style="vertical-align:inherit"><span class="zhu"></span></td>
                 </tr>
               </table>
             </form>
             <div class="submit-box">
-              <input name="submit" value="确定保存" tabindex="3" onclick="onSubmit(this)" type="submit" class="ufi-button" />
+              <input name="submit" value="提交" tabindex="3" onclick="onSubmit(this)" type="submit" class="ufi-button" />
               <span style="display:none" id="loading"><img width="20" height="20" src="/images/loading.gif" alt=""></span>
               <span id="alert"><span>
             </div>
@@ -105,7 +94,7 @@
       $(button).attr('disabled', "true");
       $("#loading").show();
       $("#alert").html("");
-      $.post('/admin/staff_edit_req/'+<?=$staff_id?>, $("#staff_form").serialize(), function(data) {
+      $.post('/admin/commment_admin_req', $("#comment_form").serialize(), function(data) {
         $(button).removeAttr("disabled");
         $("#loading").hide();
         $("#alert").html(data.msg);
@@ -118,7 +107,7 @@
           $("#alert").css('color','#ff0000');
         }
         setTimeout(function() {
-          $("#alert").html("");
+            location='/admin/comment_list/<?=$staff_id?>';
         }, 1500);
       },'json');
     }

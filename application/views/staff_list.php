@@ -22,7 +22,7 @@
       <ul>
         <li class="active"><a href="/admin/staff_list">员工</a></li>
         <li><a href="/admin/shop_list">分店</a></li>
-        <li><a href="#">后台管理员</a></li>
+        <li><a href="/admin/admin_update">后台管理员</a></li>
         <li>
           <a href="#"></a>
         </li>
@@ -83,8 +83,10 @@
                               <tr class="<?=($index%2==0)?'t1':'t2'?>">
                                 <td title="姓名"><?=$item["name"]?><i class="pcm_pc"></i></td>
                                 <td title="所在分店"><?=$item["shop_name"]?><i class="pcm_pc"></i></td>
-                                <td title="评分"><?=$item["star_avg"]?><i class="pcm_pc"></i></td>
+                                <td title="评分"><?=round($item["star_avg"],1)?><i class="pcm_pc"></i></td>
                                 <td>                  
+                                  <span class="ed" onclick="get_link(<?=$item["id"]?>);">二维码</span>
+                                  <span class="ed" onclick="reply(<?=$item["id"]?>);">点赞列表</span>
                                   <span class="ed" onclick="edit(<?=$item["id"]?>);">编辑</span>
                                   <span class="ed" onclick="del(<?=$item["id"]?>);">删除</span>
                                 </td>
@@ -113,6 +115,15 @@
 
   <div class="jq_tsc"></div>
 
+    <div class="onlines">
+      <div class="text"><span class="online_k">点赞链接</span><span class="close_online" onclick="close_online()"></span></div>
+      <div stype="padding-left:100px;">
+        <div>链接地址:</div>
+        <div id="link_text"></div>
+      </div>
+      <div class="ajax"></div>
+    </div>
+
   <script type="text/javascript">
     var loading=false;
     function del(id)
@@ -122,7 +133,7 @@
         return; 
       }
       
-      if(confirm('你确定要删除分店,删除后店里的员工将设置为无分店归属')){
+      if(confirm('你确定要删除此员工')){
         loading=true;
         $.get("/admin/staff_del_req/"+id,function(data){
           if (data!="0")
@@ -148,6 +159,27 @@
       location="/admin/staff_edit/"+id;
     }
 
+    function reply(id)
+    {
+      if (loading==true)
+      {
+        return;
+      }
+
+      location="/admin/comment_list/"+id;
+    }
+
+    function close_online(){
+      $('.onlines').hide();
+    }
+
+    function get_link(staff_id){ 
+      var top = $(document).scrollTop()+(($(window).height()-460)/2);
+      $(".onlines").css({"top":top});
+      $('.onlines').show();
+      $('.onlines .ajax').html('<div style="margin:50px 100px "><img src="/admin/staff_view_qrcode/'+staff_id+'" border="0"/></div>');
+      $("#link_text").html("<a href=\"/staff/thumb/"+staff_id+"\" target='_blank'><?=$_SERVER['SERVER_NAME']?>/staff/thumb/"+staff_id+"</a>");
+    }
   </script>
 
 </body>
