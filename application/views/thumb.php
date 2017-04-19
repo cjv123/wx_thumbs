@@ -174,6 +174,7 @@
   {
     $("#thumb_value").val($(button).val());
   }
+  
     
 </script>
 

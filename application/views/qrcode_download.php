@@ -65,7 +65,9 @@
                             </tbody>
                     </table>
                     <div class="condition">
-                        <input type="submit" value="生成下载包" class="dia_btn">
+                        <input type="submit" value="生成下载包" class="dia_btn" onclick="onSubmit(this);">
+                         <span style="display:none" id="loading"><img width="20" height="20" src="/images/loading.gif" alt=""></span>
+                         <span id="alert"><span>
                     </div>
                     <div class="clear"></div>        
                   </div>
@@ -84,7 +86,15 @@
 
 
   <script type="text/javascript">
-   
+  function onSubmit(button) {
+      $(button).attr('disabled', "true");
+      $("#loading").show();
+      $("#alert").html("");
+      $.get('/admin/make_all_qrcode', function(data) {
+          $(button).removeAttr("disabled");
+          location.reload();
+      },'json');
+  }
   </script>
 
 </body>
