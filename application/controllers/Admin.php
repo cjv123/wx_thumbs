@@ -430,7 +430,7 @@ class Admin extends CI_Controller{
     {
         $passwd = $this->input->post("passwd");
         $passwd2 = $this->input->post("passwd2");
-        $this->load->model("adminmodel");
+        $this->load->model("AdminModel");
         
         $out=array(
         "ret"=>0,
@@ -439,7 +439,7 @@ class Admin extends CI_Controller{
         
         if ($passwd && $passwd2 && $passwd==$passwd2)
         {
-            $ret = $this->adminmodel->admin_update(0,$passwd);
+            $ret = $this->AdminModel->admin_update(0,$passwd);
             if (!$ret)
             {
                 $out["msg"]="数据库写入失败";
@@ -460,8 +460,8 @@ class Admin extends CI_Controller{
         $login_name="admin";
         $passwd = $this->input->post("passwd");
         
-        $this->load->model("adminmodel");
-        $admin_info = $this->adminmodel->admin_info($login_name);
+        $this->load->model("AdminModel");
+        $admin_info = $this->AdminModel->admin_info($login_name);
         $input_admin = md5($passwd);
         if ($input_admin == $admin_info["passwd"])
         {
