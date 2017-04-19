@@ -41,6 +41,7 @@
           <ul class="ui-list leftclick">
             <li><a href="/admin/staff_list">员工列表</a></li>
             <li class="active"><a href="/admin/staff_add">添加员工</a></li>
+            <li><a href="/admin/qrcode_download">下载二维码</a></li>
           </ul>
         </div>
 
@@ -67,19 +68,21 @@
                   <td style="vertical-align:inherit"><span class="zhu"></span></td>
                 </tr>
                 <!--<tr class="t1">
-                  <td width="70"><span class="title">职位</span></td>
-                  <td width="650">
-                    <input type="text" name="job" class="input text2" value="" placeholder="最多20个汉字" maxlength="20">
-                  </td>
-                  <td style="vertical-align:inherit"><span class="zhu"></span></td>
-                </tr>-->
+<td width="70"><span class="title">职位</span></td>
+<td width="650">
+<input type="text" name="job" class="input text2" value="" placeholder="最多20个汉字" maxlength="20">
+</td>
+<td style="vertical-align:inherit"><span class="zhu"></span></td>
+</tr>-->
                 <tr class="t1">
                   <td width="70"><span class="title">所在分店</span></td>
                   <td width="650">
                     <select name="shop" id="">
                       <?php foreach($shop_list as $shop){?>
-                      <option value="<?=$shop['id']?>"><?=$shop["name"]?></option>
-                      <?php }?>
+                        <option value="<?=$shop['id']?>">
+                          <?=$shop["name"]?>
+                        </option>
+                        <?php }?>
                     </select>
                   </td>
                   <td style="vertical-align:inherit"><span class="zhu"></span></td>
@@ -90,47 +93,47 @@
               <input name="submit" value="确定保存" tabindex="3" onclick="onSubmit(this)" type="submit" class="ufi-button" />
               <span style="display:none" id="loading"><img width="20" height="20" src="/images/loading.gif" alt=""></span>
               <span id="alert"><span>
-            </div>
-          </div>
+</div>
+</div>
 
-        </div>
-      </div>
-      <!--右侧结束-->
-    </div>
-  </div>
+</div>
+</div>
+<!--右侧结束-->
+</div>
+</div>
 
-  <!--底部开始-->
-  <div class="footer">
-    <p></p>
-  </div>
+<!--底部开始-->
+<div class="footer">
+<p></p>
+</div>
 
-  <div class="jq_tsc"></div>
+<div class="jq_tsc"></div>
 
-  <script type="text/javascript">
-    
-    function onSubmit(button) {
-      $(button).attr('disabled', "true");
-      $("#loading").show();
-      $("#alert").html("");
-      $.post('/admin/staff_add_req', $("#staff_form").serialize(), function(data) {
+<script type="text/javascript">
+
+function onSubmit(button) {
+    $(button).attr('disabled', "true");
+    $("#loading").show();
+    $("#alert").html("");
+    $.post('/admin/staff_add_req', $("#staff_form").serialize(), function(data) {
         $(button).removeAttr("disabled");
         $("#loading").hide();
         $("#alert").html(data.msg);
         if (data.ret==0)
         {
-          $("#name").val("");
-          $("#alert").css('color','#00ff00');
+            $("#name").val("");
+            $("#alert").css('color','#00ff00');
         }
         else
         {
-          $("#alert").css('color','#ff0000');
+            $("#alert").css('color','#ff0000');
         }
         setTimeout(function() {
-          $("#alert").html("");
+            $("#alert").html("");
         }, 1500);
-      },'json');
-    }
-  </script>
+    },'json');
+}
+</script>
 
 </body>
 

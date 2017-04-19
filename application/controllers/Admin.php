@@ -7,8 +7,8 @@ class Admin extends CI_Controller{
         parent::__construct();
         $ctrname=$this->uri->segment(2);
         if ($ctrname==null || $ctrname=="index" || $ctrname=="" || $ctrname=="login_check")
-		 	return;
-
+            return;
+        
         if (!isset($_SESSION["admin_id"]))
         {
             header("Location:/admin");
@@ -161,19 +161,58 @@ class Admin extends CI_Controller{
         QRcode::png($value, false, $errorCorrectionLevel, $matrixPointSize);
     }
     
+    private function _addFileToZip($path,$zip){
+        $handler=opendir($path); //打开当前文件夹由$path指定。
+        while(($filename=readdir($handler))!==false){
+            if($filename != "." && $filename != ".."){//文件夹文件名字为'.'和‘..’，不要对他们进行操作
+                if(is_dir($path."/".$filename)){// 如果读取的某个对象是文件夹，则递归
+                    _addFileToZip($path."/".$filename, $zip);
+                }else{ //将文件加入zip对象
+                    $zip->addFile($path."/".$filename);
+                }
+            }
+        }
+        @closedir($path);
+    }
+    
+    
     public function make_all_qrcode($shop_id="")
     {
         require_once ("phpqrcode.php");
-        $this->load->model("staffmodel"); 
+        $this->load->model("staffmodel");
         $list = $this->staffmodel->staff_list(1,1000,"",$shop_id);
-        foreach($list as $row)        
+        foreach($list as $row)
         {
             $url = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/staff/thumb/".$row["id"];
             $value=$url;
             $errorCorrectionLevel = "L";
             $matrixPointSize = "7";
-            QRcode::png($value, "tmp/qrcode_".$row["id"].".png", $errorCorrectionLevel, $matrixPointSize);
+            QRcode::png($value, "qrcode/".$row["name"].".png", $errorCorrectionLevel, $matrixPointSize);
         }
+        
+        @unlink('qrcode/code_'.$shop_id.'.zip');
+        $zip=new ZipArchive();
+        if($zip->open('download/code_'.$shop_id.'.zip', ZipArchive::CREATE)=== TRUE){
+            $this->_addFileToZip('qrcode', $zip); //调用方法，对要打包的根目录进行操作，并将ZipArchive的对象传递给方法
+            $zip->close(); //关闭处理的zip文件
+        }
+    }
+    
+    public function qrcode_download()
+    {
+        $files = array();
+        $dir = scandir("download");
+        foreach($dir as $filename)
+        {
+            if(end(@explode('.', $filename))=="zip")
+            {
+                array_push($files,$filename);
+            }
+        }
+
+        $data["list"]=$files;
+
+        $this->load->view("qrcode_download",$data);
     }
     
     public function shop_add()
@@ -415,12 +454,12 @@ class Admin extends CI_Controller{
         
         echo json_encode($out);
     }
-
+    
     public function login_check()
     {
         $login_name="admin";
         $passwd = $this->input->post("passwd");
-
+        
         $this->load->model("adminmodel");
         $admin_info = $this->adminmodel->admin_info($login_name);
         $input_admin = md5($passwd);
