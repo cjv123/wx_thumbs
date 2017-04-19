@@ -28,13 +28,13 @@ class StaffModel extends CI_Model{
                 $searchSql.="and shop.id ='{$search_shop_id}'";
         }
         
-        $this->load->model("commentmodel");
+        $this->load->model("CommentModel");
         $sql = "select staffs.*,shop.name shop_name from staffs left join shop on staffs.shop_id=shop.id ".$searchSql." order by id desc limit ".($page-1)*$per_page.",".$per_page;
         $query=$this->db->query($sql);
         $array = $query->result_array();
         foreach($array as $key=>$row)
         {
-            $avg = $this->commentmodel->get_staff_star_avg($row["id"]);
+            $avg = $this->CommentModel->get_staff_star_avg($row["id"]);
             $array[$key]["star_avg"]=$avg;
         }
         return $array;

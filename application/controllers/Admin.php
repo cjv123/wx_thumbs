@@ -29,10 +29,10 @@ class Admin extends CI_Controller{
         $search_name = $this->input->get("name");
         $search_shop_id = $this->input->get("shop");
         $per_page=10;
-        $this->load->model("staffmodel");
-        $this->load->model("shopmodel");
-        $data["list"] =$this->staffmodel->staff_list($page,$per_page,$search_name,$search_shop_id);
-        $data["total"]=$total=$this->staffmodel->staff_list_count($search_name,$search_shop_id);
+        $this->load->model("StaffModel");
+        $this->load->model("ShopModel");
+        $data["list"] =$this->StaffModel->staff_list($page,$per_page,$search_name,$search_shop_id);
+        $data["total"]=$total=$this->StaffModel->staff_list_count($search_name,$search_shop_id);
         $params=array('total'=>$total,'per_page'=>$per_page,'page'=>$page);
         $this->load->library('Page_cjv',$params);
         
@@ -41,15 +41,15 @@ class Admin extends CI_Controller{
         $data["page"]=$page;
         $data["search_name"]=$search_name;
         $data["search_shop_id"]=$search_shop_id;
-        $data["shop_list"]=$this->shopmodel->shop_list();
+        $data["shop_list"]=$this->ShopModel->shop_list();
         
         $this->load->view("staff_list",$data);
     }
     
     public function staff_add()
     {
-        $this->load->model("shopmodel");
-        $shop_list=$this->shopmodel->shop_list(1,100);
+        $this->load->model("ShopModel");
+        $shop_list=$this->ShopModel->shop_list(1,100);
         $data["shop_list"]=$shop_list;
         $this->load->view("staff_add",$data);
     }
@@ -60,10 +60,10 @@ class Admin extends CI_Controller{
         {
             return;
         }
-        $this->load->model("staffmodel");
-        $this->load->model("shopmodel");
-        $data = $this->staffmodel->staff_info($id);
-        $data["shop_list"] = $this->shopmodel->shop_list(1,100);
+        $this->load->model("StaffModel");
+        $this->load->model("ShopModel");
+        $data = $this->StaffModel->staff_info($id);
+        $data["shop_list"] = $this->ShopModel->shop_list(1,100);
         $data["staff_id"]=$id;
         $this->load->view("staff_edit",$data);
     }
@@ -76,7 +76,7 @@ class Admin extends CI_Controller{
         $job="";
         $shopId=$this->input->post("shop");
         
-        $this->load->model("staffmodel");
+        $this->load->model("StaffModel");
         
         $out=array(
         "ret"=>0,
@@ -95,8 +95,8 @@ class Admin extends CI_Controller{
         }
         else
         {
-            $this->load->model("staffmodel");
-            $ret = $this->staffmodel->staff_add($name,$des,$job,$shopId);
+            $this->load->model("StaffModel");
+            $ret = $this->StaffModel->staff_add($name,$des,$job,$shopId);
             if (!$ret)
             {
                 $out["ret"]=1;
@@ -118,7 +118,7 @@ class Admin extends CI_Controller{
         $job="";
         $shopId=$this->input->post("shop");
         
-        $this->load->model("staffmodel");
+        $this->load->model("StaffModel");
         
         $out=array(
         "ret"=>0,
@@ -137,8 +137,8 @@ class Admin extends CI_Controller{
         }
         else
         {
-            $this->load->model("staffmodel");
-            $ret = $this->staffmodel->staff_update($staff_id,$name,$des,$job,$shopId);
+            $this->load->model("StaffModel");
+            $ret = $this->StaffModel->staff_update($staff_id,$name,$des,$job,$shopId);
             if (!$ret)
             {
                 $out["ret"]=1;
@@ -164,8 +164,8 @@ class Admin extends CI_Controller{
     public function make_all_qrcode($shop_id="")
     {
         require_once ("phpqrcode.php");
-        $this->load->model("staffmodel"); 
-        $list = $this->staffmodel->staff_list(1,1000,"",$shop_id);
+        $this->load->model("StaffModel"); 
+        $list = $this->StaffModel->staff_list(1,1000,"",$shop_id);
         foreach($list as $row)        
         {
             $url = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/staff/thumb/".$row["id"];
@@ -186,8 +186,8 @@ class Admin extends CI_Controller{
         if (!$id)
             return;
         
-        $this->load->model("shopmodel");
-        $data = $this->shopmodel->shop_info($id);
+        $this->load->model("ShopModel");
+        $data = $this->ShopModel->shop_info($id);
         $this->load->view("shop_edit",$data);
     }
     
@@ -209,8 +209,8 @@ class Admin extends CI_Controller{
         }
         else
         {
-            $this->load->model("shopmodel");
-            $ret = $this->shopmodel->shop_add($name,$des);
+            $this->load->model("ShopModel");
+            $ret = $this->ShopModel->shop_add($name,$des);
             if (!$ret)
             {
                 $out["ret"]=1;
@@ -242,8 +242,8 @@ class Admin extends CI_Controller{
         }
         else
         {
-            $this->load->model("shopmodel");
-            $ret = $this->shopmodel->shop_update($id,$name,$des);
+            $this->load->model("ShopModel");
+            $ret = $this->ShopModel->shop_update($id,$name,$des);
             if (!$ret)
             {
                 $out["ret"]=1;
@@ -259,9 +259,9 @@ class Admin extends CI_Controller{
         $search_name = $this->input->get("name");
         $per_page=10;
         
-        $this->load->model("shopmodel");
-        $data["list"] =$this->shopmodel->shop_list($page,$per_page,$search_name);
-        $data["total"]=$total=$this->shopmodel->shop_count($search_name);
+        $this->load->model("ShopModel");
+        $data["list"] =$this->ShopModel->shop_list($page,$per_page,$search_name);
+        $data["total"]=$total=$this->ShopModel->shop_count($search_name);
         $params=array('total'=>$total,'per_page'=>$per_page,'page'=>$page);
         $this->load->library('Page_cjv',$params);
         
@@ -275,8 +275,8 @@ class Admin extends CI_Controller{
     
     public function shop_del_req($id)
     {
-        $this->load->model("shopmodel");
-        $ret = $this->shopmodel->shop_del($id);
+        $this->load->model("ShopModel");
+        $ret = $this->ShopModel->shop_del($id);
         if ($ret)
         {
             echo "0";
@@ -289,8 +289,8 @@ class Admin extends CI_Controller{
     
     public function staff_del_req($id)
     {
-        $this->load->model("staffmodel");
-        $ret = $this->staffmodel->staff_del($id);
+        $this->load->model("StaffModel");
+        $ret = $this->StaffModel->staff_del($id);
         if ($ret)
         {
             echo "0";
@@ -309,22 +309,22 @@ class Admin extends CI_Controller{
             return;
         }
         
-        $this->load->model("commentmodel");
+        $this->load->model("CommentModel");
         $per_page = 10;
-        $data["total"]=$total=$this->commentmodel->comment_count($staff_id);
+        $data["total"]=$total=$this->CommentModel->comment_count($staff_id);
         $params=array('total'=>$total,'per_page'=>$per_page,'page'=>$page);
         $this->load->library('Page_cjv',$params);
         $this->page_cjv->url="/admin/comment_list/";
         $data["pager"]=$this->page_cjv->show();
-        $comment_list=$this->commentmodel->comment_list($staff_id,$page,$per_page);
+        $comment_list=$this->CommentModel->comment_list($staff_id,$page,$per_page);
         $data["list"]=$comment_list;
         $this->load->view("comment_list",$data);
     }
     
     public function comment_del_req($comment_id)
     {
-        $this->load->model("commentmodel");
-        $ret = $this->commentmodel->comment_del($comment_id);
+        $this->load->model("CommentModel");
+        $ret = $this->CommentModel->comment_del($comment_id);
         if($ret)
         {
             echo "0";
@@ -369,8 +369,8 @@ class Admin extends CI_Controller{
         }
         else
         {
-            $this->load->model("commentmodel");
-            $ret = $this->commentmodel->comment_admin_add($comment_id,$comment_admin,$admin_id);
+            $this->load->model("CommentModel");
+            $ret = $this->CommentModel->comment_admin_add($comment_id,$comment_admin,$admin_id);
             if (!$ret)
             {
                 $out["ret"]=1;

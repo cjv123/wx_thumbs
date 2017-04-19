@@ -18,12 +18,12 @@ class Staff extends CI_Controller{
 		{
 			return;
 		}
-		$this->load->model("staffmodel");
-		$this->load->model("commentmodel");
-		$info = $this->staffmodel->staff_info($staff_id);
+		$this->load->model("StaffModel");
+		$this->load->model("CommentModel");
+		$info = $this->StaffModel->staff_info($staff_id);
 		$data=$info;
 		$data["staff_id"]=$staff_id;
-		$data["list"]=$this->commentmodel->comment_list($staff_id);
+		$data["list"]=$this->CommentModel->comment_list($staff_id);
 		$this->load->view("thumb",$data);
 	}
 	
@@ -36,8 +36,8 @@ class Staff extends CI_Controller{
 
 		$star = $this->input->post("star");
 		$text = $this->input->post("text");
-		$this->load->model("commentmodel");
-		$ret = $this->commentmodel->comment_add($star,$text,$staff_id);
+		$this->load->model("CommentModel");
+		$ret = $this->CommentModel->comment_add($star,$text,$staff_id);
 		$data["ret"]=$ret;
 		$this->load->view("thumb_res",$data);
 	}
@@ -48,10 +48,10 @@ class Staff extends CI_Controller{
 		$shop_id=$this->input->get("shop");
 		$per_page=10;
 
-		$this->load->model("staffmodel");
-		$this->load->model("shopmodel");
-	 	$data["staff_list"] = $this->staffmodel->staff_list($page,1000,"",$shop_id);
-        $data["shop_list"] = $this->shopmodel->shop_list(1,100);
+		$this->load->model("StaffModel");
+		$this->load->model("ShopModel");
+	 	$data["staff_list"] = $this->StaffModel->staff_list($page,1000,"",$shop_id);
+        $data["shop_list"] = $this->ShopModel->shop_list(1,100);
 		$data["shop_id"]=$shop_id;
 		$this->load->view("public_staff_list",$data);
 	}
