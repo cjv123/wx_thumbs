@@ -80,7 +80,8 @@ class Staff extends CI_Controller{
 		$data=$info;
 		$data["staff_id"]=$staff_id;
 		$data["list"]=$this->CommentModel->comment_list($staff_id);
-		print_r($data);
+		$data["wx_name"]=$wx_name;
+		// print_r($data);
 		$this->load->view("thumb",$data);
 	}
 	

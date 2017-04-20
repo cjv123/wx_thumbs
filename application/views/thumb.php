@@ -59,7 +59,8 @@
 <!-- 页面内容 开发时删除 -->
 <div class="am-g am-g-fixed am-margin-top">
   <div class="am-u-sm-12">
-    <h1>您好,欢迎您对我们的员工进行点赞!</h1>
+    <h1>您好,<?=$wx_name?></h1>
+    <h2>欢迎您对我们的员工进行点赞!</h1>
 
     <h2>您正在评价是<font color="red"><b>“<?=$name?>”</b></font><h2>
   </div>
