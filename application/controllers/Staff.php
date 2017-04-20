@@ -13,6 +13,7 @@ class Staff extends CI_Controller{
 	public function index()
 	{
 		// echo "staff";
+		echo urldecode("http%3A%2F%2Fcoder4game.com%3A8088%2Fstaff%2Fthumb%2F18");
 	}
 
 	public function qrcode2Page($staff_id)
@@ -20,24 +21,28 @@ class Staff extends CI_Controller{
 
 		$back_url = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/staff/thumb/{$staff_id}";
 		$back_url = urlencode($back_url);
-		header("Location:https://open.weixin.qq.com/connect/oauth2/authorize?
-		appid={$this->wx_appid}&
-		redirect_uri={$back_url}&
-		response_type=code&
-		scope=snsapi_userinfoE&
-		state=STATE#wechat_redirect");
+		$url  = "https://open.weixin.qq.com/connect/oauth2/authorize?".
+		"appid={$this->wx_appid}&".
+		"redirect_uri={$back_url}&".
+		"response_type=code&".
+		"scope=snsapi_userinfo&".
+		"state=STATE#wechat_redirect";
+		// echo $url;
+		// header($url);
+		echo "<script>location='{$url}'</script>";
 	}
 
 	private function _get_wxname()
 	{
 		$code = $this->input->get("code");
 		$state = $this->input->get("state");
-		$url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid={$this->wx_appid}&
-		secret={$this->wx_appsecret}&
-		code={$code}&
-		grant_type=authorization_code";
+		$url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid={$this->wx_appid}&".
+		"secret={$this->wx_appsecret}&".
+		"code={$code}&".
+		"grant_type=authorization_code";
 		$res = $this->_http($url);
-		$res_arr = @json_decode($res);
+		// echo "res:".$res;
+		$res_arr = @json_decode($res,true);
 		$token = "";
 		if (isset($res_arr["ACCESS_TOKEN"]))
 		{
@@ -50,7 +55,7 @@ class Staff extends CI_Controller{
 		{
 			$url = "https://api.weixin.qq.com/sns/userinfo?access_token={$token}&openid={$openid}&lang=zh_CN";
 			$res = $this->_http($url);
-			$res_arr = @json_decode($res);
+			$res_arr = @json_decode($res,true);
 			if (isset($res_arr["nickname"]))
 			{
 				$wx_name = $res_arr["nickname"];
@@ -67,7 +72,7 @@ class Staff extends CI_Controller{
 			return;
 		}
 		$wx_name = $this->_get_wxname();
-		print_r("wxname:".$wx_name);
+		print_r($wx_name);
 
 		$this->load->model("StaffModel");
 		$this->load->model("CommentModel");
@@ -75,6 +80,7 @@ class Staff extends CI_Controller{
 		$data=$info;
 		$data["staff_id"]=$staff_id;
 		$data["list"]=$this->CommentModel->comment_list($staff_id);
+		print_r($data);
 		$this->load->view("thumb",$data);
 	}
 	
