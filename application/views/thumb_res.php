@@ -52,7 +52,7 @@
 <div class="am-g am-g-fixed am-margin-top">
   <div class="am-u-sm-12">
     <h1><?php if ($ret){echo "提交成功！";}else{echo "提交失败！可能数据库出现异常!";}?></h1>
-    <a href="/staff/staff_list">还可以对其他员工点赞</a>
+    <!--<a href="/staff/staff_list">还可以对其他员工点赞</a>-->
   </div>
 </div>
 

@@ -78,6 +78,10 @@ class Staff extends CI_Controller{
 		$this->load->model("StaffModel");
 		$this->load->model("CommentModel");
 		$info = $this->StaffModel->staff_info($staff_id);
+		if (sizeof($info)==0)	
+		{
+			return;
+		}
 		$data=$info;
 		$data["staff_id"]=$staff_id;
 		$data["list"]=$this->CommentModel->comment_list($staff_id);
@@ -98,6 +102,11 @@ class Staff extends CI_Controller{
 		$wx_name = $this->input->post("wx_name");
 		$this->load->model("CommentModel");
 		$ret = $this->CommentModel->comment_add($star,$text,$staff_id,$wx_name);
+		header("Location:/staff/thumb_res/".$ret);
+	}
+	
+	public function thumb_res($ret)
+	{
 		$data["ret"]=$ret;
 		$this->load->view("thumb_res",$data);
 	}

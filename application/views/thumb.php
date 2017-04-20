@@ -77,7 +77,7 @@
     
   </div>
   
-  <form method="post" class="am-form" action="/staff/thumb_req/<?=$staff_id?>" id="thumb_form">
+  <form class="am-form" action="/staff/thumb_req/<?=$staff_id?>" id="thumb_form">
     <fieldset>
         <div class="am-form-group">
           <label for="doc-ta-1">评论文字(最多500字,可不填写):</label>
@@ -99,7 +99,7 @@
       <div class="am-comment-main">
         <header class="am-comment-hd">
           <div class="am-comment-meta">
-            <a href="#link-to-user" class="am-comment-author"></a> 点赞 
+            <a href="#link-to-user" class="am-comment-author"><?=$row["wx_name"]?></a> 点赞 
             <time datetime="<?=date("Y-m-d H:i:s",$row['time'])?>" title="<?=date("Y-m-d H:i:s",$row['time'])?>"><?=date("Y-m-d H:i:s",$row['time'])?></time>
           </div>
         </header>
