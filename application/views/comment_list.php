@@ -53,7 +53,7 @@
             <table id="tbbg" width="100%" border="0" cellspacing="0" cellpadding="0">
               <tbody>
                 <tr class="trhover">
-                  <!--<td><span class="gray">客人名称</span></td>-->
+                  <td><span class="gray">微信昵称</span></td>
                   <td><span class="gray">评分</span></td>
                   <td><span class="gray">评论</span></td>
                   <td><span class="gray">管理员回复</span></td>
@@ -63,7 +63,7 @@
 
                 <?php  foreach ($list as $index=>$item){?>
                   <tr class="<?=($index%2==0)?'t1':'t2'?>">
-                    <!--<td title="姓名"><i class="pcm_pc"></i></td>-->
+                    <td title="微信昵称"><?=$item["wx_name"]?><i class="pcm_pc"></i></td>
                     <td title="评分">
                       <?=round($item["star"],1)?></td>
                     <td title="评论" width="30%">

@@ -44,9 +44,9 @@ class Staff extends CI_Controller{
 		// echo "res:".$res;
 		$res_arr = @json_decode($res,true);
 		$token = "";
-		if (isset($res_arr["ACCESS_TOKEN"]))
+		if (isset($res_arr["access_token"]))
 		{
-			$token = $res_arr["ACCESS_TOKEN"];
+			$token = $res_arr["access_token"];
 			$openid = $res_arr["openid"];
 		}
 
@@ -55,6 +55,7 @@ class Staff extends CI_Controller{
 		{
 			$url = "https://api.weixin.qq.com/sns/userinfo?access_token={$token}&openid={$openid}&lang=zh_CN";
 			$res = $this->_http($url);
+			// print_r($res);
 			$res_arr = @json_decode($res,true);
 			if (isset($res_arr["nickname"]))
 			{
@@ -94,8 +95,9 @@ class Staff extends CI_Controller{
 
 		$star = $this->input->post("star");
 		$text = $this->input->post("text");
+		$wx_name = $this->input->post("wx_name");
 		$this->load->model("CommentModel");
-		$ret = $this->CommentModel->comment_add($star,$text,$staff_id);
+		$ret = $this->CommentModel->comment_add($star,$text,$staff_id,$wx_name);
 		$data["ret"]=$ret;
 		$this->load->view("thumb_res",$data);
 	}

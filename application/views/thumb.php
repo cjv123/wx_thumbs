@@ -83,6 +83,7 @@
           <label for="doc-ta-1">评论文字(最多500字,可不填写):</label>
           <textarea name="text" class="" rows="5" id="doc-ta-1"></textarea>
           <input name="star" id="thumb_value" type="hidden" value="3" />          
+          <input name="wx_name" id="wx_name" type="hidden" value="<?=$wx_name?>" />          
         </div>
     </filedset>
     <p><button type="submit" class="am-btn am-btn-default" onclick="">提交</button></p>

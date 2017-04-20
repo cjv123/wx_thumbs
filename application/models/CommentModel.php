@@ -8,9 +8,9 @@ class CommentModel extends CI_Model{
         $this->load->database();
     }
     
-    public function comment_add($star,$text,$staff_id) 
+    public function comment_add($star,$text,$staff_id,$wx_name) 
     {
-        $sql="insert into comment values('','{$star}','{$text}','','','{$staff_id}',".time().")";
+        $sql="insert into comment values('','{$star}','{$text}','','','{$staff_id}','{$wx_name}',".time().")";
         $query = $this->db->query($sql);
         return $query;
     }
