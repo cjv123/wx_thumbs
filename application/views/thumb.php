@@ -77,7 +77,7 @@
     
   </div>
   
-  <form class="am-form" action="/staff/thumb_req/<?=$staff_id?>" id="thumb_form">
+  <form class="am-form" method="post" action="/staff/thumb_req/<?=$staff_id?>" id="thumb_form">
     <fieldset>
         <div class="am-form-group">
           <label for="doc-ta-1">评论文字(最多500字,可不填写):</label>
