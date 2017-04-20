@@ -152,7 +152,7 @@ class Admin extends CI_Controller{
     
     public function staff_view_qrcode($id)
     {
-        $url = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/staff/thumb/".$id;
+        $url = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/staff/qrcode2Page/".$id;
         
         require_once ("phpqrcode.php");
         $value=$url;
