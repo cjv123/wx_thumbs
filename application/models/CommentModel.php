@@ -33,7 +33,7 @@ class CommentModel extends CI_Model{
     public function comment_list($staff_id,$page=1,$per_page=100)
     {
         $sql ="select comment.*,staffs.name staff_name from comment,staffs 
-        where comment.staff_id=staffs.id and comment.staff_id={$staff_id} limit ".($page-1)*$per_page.",".$per_page;;
+        where comment.staff_id=staffs.id and comment.staff_id={$staff_id} order by comment.id desc limit ".($page-1)*$per_page.",".$per_page;
         $query = $this->db->query($sql);
         $array =$query->result_array(); 
         return $array;

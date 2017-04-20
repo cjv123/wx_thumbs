@@ -73,7 +73,7 @@ class Staff extends CI_Controller{
 			return;
 		}
 		$wx_name = $this->_get_wxname();
-		print_r($wx_name);
+		// print_r($wx_name);
 
 		$this->load->model("StaffModel");
 		$this->load->model("CommentModel");
