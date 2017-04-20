@@ -102,7 +102,8 @@ class Staff extends CI_Controller{
 		$wx_name = $this->input->post("wx_name");
 		$this->load->model("CommentModel");
 		$ret = $this->CommentModel->comment_add($star,$text,$staff_id,$wx_name);
-		header("Location:/staff/thumb_res/".$ret);
+		echo $ret;
+		// header("Location:/staff/thumb_res/".$ret);
 	}
 	
 	public function thumb_res($ret)

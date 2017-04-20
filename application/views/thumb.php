@@ -77,7 +77,7 @@
     
   </div>
   
-  <form class="am-form" method="post" action="/staff/thumb_req/<?=$staff_id?>" id="thumb_form">
+  <form class="am-form"  id="thumb_form">
     <fieldset>
         <div class="am-form-group">
           <label for="doc-ta-1">评论文字(最多500字,可不填写):</label>
@@ -86,8 +86,8 @@
           <input name="wx_name" id="wx_name" type="hidden" value="<?=$wx_name?>" />          
         </div>
     </filedset>
-    <p><button type="submit" class="am-btn am-btn-default" onclick="">提交</button></p>
   </form>
+    <p><button type="button" class="am-btn am-btn-default" onclick="onSubmit(this);">提交</button></p>
 
   <hr>
 
@@ -177,6 +177,14 @@
     $("#thumb_value").val($(button).val());
   }
   
+  function onSubmit(button) {
+    $(button).attr('disabled', "true");
+    $("#alert").html("");
+    $.post('/staff/thumb_req/<?=$staff_id?>', $("#thumb_form").serialize(), function(data) {
+        $(button).removeAttr("disabled");
+        location='/staff/thumb_res/'+data;
+    });
+}
     
 </script>
 
