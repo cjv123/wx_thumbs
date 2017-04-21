@@ -181,11 +181,11 @@ class Admin extends CI_Controller{
     public function make_all_qrcode($shop_id="")
     {
         require_once ("phpqrcode.php");
-        $this->load->model("StaffModel"); 
+        $this->load->model("StaffModel");
         $list = $this->StaffModel->staff_list(1,1000,"",$shop_id);
-        foreach($list as $row)        
+        foreach($list as $row)
         {
-            $url = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/staff/thumb/".$row["id"];
+            $url = $this->StaffModel->get_qrcode2page_url().$row["id"];
             $value=$url;
             $errorCorrectionLevel = "L";
             $matrixPointSize = "7";
@@ -211,9 +211,9 @@ class Admin extends CI_Controller{
                 array_push($files,$filename);
             }
         }
-
+        
         $data["list"]=$files;
-
+        
         $this->load->view("qrcode_download",$data);
     }
     
