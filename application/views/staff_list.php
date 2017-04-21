@@ -181,7 +181,7 @@
       });
       $('.onlines').show();
       $('.onlines .ajax').html('<div style="margin:50px 100px "><img src="/admin/staff_view_qrcode/' + staff_id + '" border="0"/></div>');
-      $("#link_text").html("<a href=\"/staff/qrcode2Page/" + staff_id + "\" target='_blank'><?=$_SERVER['SERVER_NAME']?>/staff/qrcode2Page/" + staff_id + "</a>");
+      $("#link_text").html("<a href=\"<?=$qrcode2url?>" + staff_id + "\" target='_blank'><?=$qrcode2url?>" + staff_id + "</a>");
     }
   </script>
 

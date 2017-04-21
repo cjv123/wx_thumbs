@@ -2,9 +2,6 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Staff extends CI_Controller{
-	private $wx_appid="wx4369f85d921163f8";
-	private $wx_appsecret="3aee9a9658c0b003554383bd60b7bd22";
-
 	public function __construct()
 	{
 		parent::__construct();
@@ -18,7 +15,6 @@ class Staff extends CI_Controller{
 
 	public function qrcode2Page($staff_id)
 	{
-
 		$back_url = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/staff/thumb/{$staff_id}";
 		$back_url = urlencode($back_url);
 		$url  = "https://open.weixin.qq.com/connect/oauth2/authorize?".
@@ -34,10 +30,13 @@ class Staff extends CI_Controller{
 
 	private function _get_wxname()
 	{
+		$wx_appid = $this->StaffModel->wx_appid;
+		$wx_appsecret= $this->StaffModel->wx_appsecret;
+
 		$code = $this->input->get("code");
 		$state = $this->input->get("state");
-		$url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid={$this->wx_appid}&".
-		"secret={$this->wx_appsecret}&".
+		$url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid={$wx_appid}&".
+		"secret={$wx_appsecret}&".
 		"code={$code}&".
 		"grant_type=authorization_code";
 		$res = $this->_http($url);
@@ -72,10 +71,10 @@ class Staff extends CI_Controller{
 		{
 			return;
 		}
+		$this->load->model("StaffModel");
 		$wx_name = $this->_get_wxname();
 		// print_r($wx_name);
 
-		$this->load->model("StaffModel");
 		$this->load->model("CommentModel");
 		$info = $this->StaffModel->staff_info($staff_id);
 		if (sizeof($info)==0)	

@@ -42,6 +42,7 @@ class Admin extends CI_Controller{
         $data["search_name"]=$search_name;
         $data["search_shop_id"]=$search_shop_id;
         $data["shop_list"]=$this->ShopModel->shop_list();
+        $data["qrcode2url"]=$this->StaffModel->get_qrcode2page_url();
         
         $this->load->view("staff_list",$data);
     }
@@ -152,7 +153,8 @@ class Admin extends CI_Controller{
     
     public function staff_view_qrcode($id)
     {
-        $url = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/staff/qrcode2Page/".$id;
+        $this->load->model("StaffModel");
+        $url = $this->StaffModel->get_qrcode2page_url().$id;
         
         require_once ("phpqrcode.php");
         $value=$url;

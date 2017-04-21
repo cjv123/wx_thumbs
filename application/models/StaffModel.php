@@ -2,10 +2,27 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class StaffModel extends CI_Model{
+	public $wx_appid="";
+	public $wx_appsecret="";
+
     public function __construct()
     {
         parent::__construct();
         $this->load->database();
+    }
+
+    public function get_qrcode2page_url()
+    {
+        $url = "";
+        if ($this->wx_appid=="")
+        {
+            $url = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/staff/thumb/"; 
+        }
+        else
+        {
+            $url = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/staff/qrcode2Page/"; 
+        }
+        return $url;
     }
     
     public function staff_add($name,$des,$job,$shopId)
