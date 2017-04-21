@@ -18,7 +18,7 @@ class Staff extends CI_Controller{
 		$this->load->model("StaffModel");
 		$wx_appid = $this->StaffModel->wx_appid;
 
-		$back_url = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/staff/thumb/{$staff_id}";
+		$back_url = "http://".$_SERVER['SERVER_NAME']."/staff/thumb/{$staff_id}";
 		$back_url = urlencode($back_url);
 		$url  = "https://open.weixin.qq.com/connect/oauth2/authorize?".
 		"appid={$wx_appid}&".

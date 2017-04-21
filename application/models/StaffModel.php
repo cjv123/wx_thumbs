@@ -16,11 +16,11 @@ class StaffModel extends CI_Model{
         $url = "";
         if ($this->wx_appid=="")
         {
-            $url = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/staff/thumb/"; 
+            $url = "http://".$_SERVER['SERVER_NAME']."/staff/thumb/"; 
         }
         else
         {
-            $url = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/staff/qrcode2Page/"; 
+            $url = "http://".$_SERVER['SERVER_NAME']."/staff/qrcode2Page/"; 
         }
         return $url;
     }
