@@ -15,10 +15,13 @@ class Staff extends CI_Controller{
 
 	public function qrcode2Page($staff_id)
 	{
+		$this->load->model("StaffModel");
+		$wx_appid = $this->StaffModel->wx_appid;
+
 		$back_url = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/staff/thumb/{$staff_id}";
 		$back_url = urlencode($back_url);
 		$url  = "https://open.weixin.qq.com/connect/oauth2/authorize?".
-		"appid={$this->wx_appid}&".
+		"appid={$wx_appid}&".
 		"redirect_uri={$back_url}&".
 		"response_type=code&".
 		"scope=snsapi_userinfo&".
