@@ -94,6 +94,8 @@ class StaffModel extends CI_Model{
     public function staff_del($staffId)
     {
         $sql ="delete from staffs where id={$staffId}";
+        $this->db->query($sql);
+        $sql ="delete from comment where staff_id={$staffId}";
         return $this->db->query($sql);
     }
 }

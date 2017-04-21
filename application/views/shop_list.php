@@ -111,7 +111,7 @@
       
       if(confirm('你确定要删除分店,删除后店里的员工将设置为无分店归属')){
         loading=true;
-        $.get("/admin/staff_del_req/"+id,function(data){
+        $.get("/admin/shop_del_req/"+id,function(data){
           if (data!="0")
           {
             alert("删除失败，数据库异常");
