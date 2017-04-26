@@ -192,8 +192,8 @@ class Admin extends CI_Controller{
             $value=$url;
             $errorCorrectionLevel = "L";
             $matrixPointSize = "7";
-            // $filename = mb_convert_encoding($row["name"],"GB2312","UTF-8");
-            $filename = $row["name"];
+            $filename = iconv("UTF-8","GB2312",$row["name"]);
+            // $filename = $row["name"];
             QRcode::png($value, "qrcode/".$filename.".png", $errorCorrectionLevel, $matrixPointSize);
         }
         
