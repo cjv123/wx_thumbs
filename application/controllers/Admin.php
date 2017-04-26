@@ -190,7 +190,8 @@ class Admin extends CI_Controller{
             $value=$url;
             $errorCorrectionLevel = "L";
             $matrixPointSize = "7";
-            QRcode::png($value, "qrcode/".$row["name"].".png", $errorCorrectionLevel, $matrixPointSize);
+            $filename = mb_convert_encoding($row["name"],"GB2312","UTF-8");
+            QRcode::png($value, "qrcode/".$filename.".png", $errorCorrectionLevel, $matrixPointSize);
         }
         
         @unlink('qrcode/code_'.$shop_id.'.zip');
