@@ -51,21 +51,8 @@
           <div class="layout-main">
             <div class="box">
                   <div class="ui-table-row">
-                      <table id="tbbg" width="100%" border="0" cellspacing="0" cellpadding="0">
-                            <tr class="t1"><td>下载包，点击下载</td></tr>
-                            <tbody>
-                              <?php  foreach ($list as $index=>$item){?>
-                              <tr class="t2">
-                                <td><a href="/download/<?=$item?>"><?=$item?></a></td>
-                              </tr>
-                              <?php }?>
-                              <?php if(count($list)==0){?>
-                                <tr class="t1"><td><b>还没有生成下载包</b></td></tr>
-                              <?php }?>
-                            </tbody>
-                    </table>
                     <div class="condition">
-                        <input type="submit" value="生成下载包" class="dia_btn" onclick="onSubmit(this);">
+                        <input type="submit" value="生成并下载" class="dia_btn" onclick="onSubmit(this);">
                          <span style="display:none" id="loading"><img width="20" height="20" src="/images/loading.gif" alt=""></span>
                          <span id="alert"><span>
                     </div>
@@ -87,13 +74,14 @@
 
   <script type="text/javascript">
   function onSubmit(button) {
-      $(button).attr('disabled', "true");
-      $("#loading").show();
-      $("#alert").html("");
-      $.get('/admin/make_all_qrcode', function(data) {
-          $(button).removeAttr("disabled");
-          location.reload();
-      },'json');
+      location='/admin/make_all_qrcode';
+      // $(button).attr('disabled', "true");
+      // $("#loading").show();
+      // $("#alert").html("");
+      // $.get('/admin/make_all_qrcode', function(data) {
+      //     $(button).removeAttr("disabled");
+      //     location.reload();
+      // },'json');
   }
   </script>
 

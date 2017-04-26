@@ -80,9 +80,9 @@ class Admin extends CI_Controller{
         $this->load->model("StaffModel");
         
         $out=array(
-        "ret"=>0,
-        "msg"=>"添加成功",
-        );
+            "ret"=>0,
+            "msg"=>"添加成功",
+            );
         
         if ($shopId=="")
         {
@@ -111,7 +111,7 @@ class Admin extends CI_Controller{
     public function staff_edit_req($staff_id)
     {
         if(!$staff_id)
-        return;
+            return;
         
         $name=$this->input->post("name");
         $name=trim($name);
@@ -122,9 +122,9 @@ class Admin extends CI_Controller{
         $this->load->model("StaffModel");
         
         $out=array(
-        "ret"=>0,
-        "msg"=>"保存成功",
-        );
+            "ret"=>0,
+            "msg"=>"保存成功",
+            );
         
         if ($shopId=="")
         {
@@ -167,7 +167,7 @@ class Admin extends CI_Controller{
         $handler=opendir($path); //打开当前文件夹由$path指定。
         while(($filename=readdir($handler))!==false){
             if($filename != "." && $filename != ".." &&
-            substr(strrchr($filename, '.'), 1)=="png"
+                substr(strrchr($filename, '.'), 1)=="png"
             ){//文件夹文件名字为'.'和‘..’，不要对他们进行操作
                 if(is_dir($path."/".$filename)){// 如果读取的某个对象是文件夹，则递归
                     // _addFileToZip($path."/".$filename, $zip);
@@ -189,120 +189,126 @@ class Admin extends CI_Controller{
         @array_map('unlink', glob('qrcode/*.png'));
         foreach($list as $row)
         {
-        $url = $this->StaffModel->get_qrcode2page_url().$row["id"];
-        $value=$url;
-        $errorCorrectionLevel = "L";
-        $matrixPointSize = "7";
-        // $filename = mb_convert_encoding($row["name"],"GB2312","UTF-8");
-        $filename = $row["name"];
-        QRcode::png($value, "qrcode/".$filename.".png", $errorCorrectionLevel, $matrixPointSize);
+            $url = $this->StaffModel->get_qrcode2page_url().$row["id"];
+            $value=$url;
+            $errorCorrectionLevel = "L";
+            $matrixPointSize = "7";
+            $filename = $row["name"];
+            QRcode::png($value, "qrcode/".$filename.".png", $errorCorrectionLevel, $matrixPointSize);
         }
         
         @unlink('downloade/code_'.$shop_id.'.zip');
+        $download_filename ='download/code_'.$shop_id.'.zip'; 
         $zip=new ZipArchive();
-        if($zip->open('download/code_'.$shop_id.'.zip', ZipArchive::CREATE)=== TRUE){
-        $this->_addFileToZip('qrcode', $zip); //调用方法，对要打包的根目录进行操作，并将ZipArchive的对象传递给方法
-        $zip->close(); //关闭处理的zip文件
-        }
-        }
-        
-        public function qrcode_download()
+        if($zip->open($download_filename, ZipArchive::CREATE)=== TRUE)
         {
+            $this->_addFileToZip('qrcode', $zip); //调用方法，对要打包的根目录进行操作，并将ZipArchive的对象传递给方法
+            $zip->close(); //关闭处理的zip文件
+
+            header('Content-Type: application/octet-stream');
+            header("Content-Disposition: attachment; filename=\"qrcode.zip\"");
+            header('Content-Transfer-Encoding: binary');
+            readfile($download_filename);
+        }
+    }
+
+    public function qrcode_download()
+    {
         $files = array();
         $dir = scandir("download");
         foreach($dir as $filename)
         {
-        if(end(@explode('.', $filename))=="zip")
-        {
-        array_push($files,$filename);
-        }
+            if(end(@explode('.', $filename))=="zip")
+            {
+                array_push($files,$filename);
+            }
         }
         
         $data["list"]=$files;
         
         $this->load->view("qrcode_download",$data);
-        }
-        
-        public function shop_add()
-        {
+    }
+
+    public function shop_add()
+    {
         $this->load->view("shop_add");
-        }
-        
-        public function shop_edit($id)
-        {
+    }
+
+    public function shop_edit($id)
+    {
         if (!$id)
-        return;
+            return;
         
         $this->load->model("ShopModel");
         $data = $this->ShopModel->shop_info($id);
         $this->load->view("shop_edit",$data);
-        }
-        
-        public function shop_add_seq()
-        {
+    }
+
+    public function shop_add_seq()
+    {
         $name=$this->input->post("name");
         $name=trim($name);
         $des="";
         
         $out=array(
-        "ret"=>0,
-        "msg"=>"添加成功",
-        );
+            "ret"=>0,
+            "msg"=>"添加成功",
+            );
         
         if ($name=="")
         {
-        $out["ret"]=2;
-        $out["msg"]="请输入店名!";
+            $out["ret"]=2;
+            $out["msg"]="请输入店名!";
         }
         else
         {
-        $this->load->model("ShopModel");
-        $ret = $this->ShopModel->shop_add($name,$des);
-        if (!$ret)
-        {
-        $out["ret"]=1;
-        $out["msg"]="数据写入失败";
-        }
+            $this->load->model("ShopModel");
+            $ret = $this->ShopModel->shop_add($name,$des);
+            if (!$ret)
+            {
+                $out["ret"]=1;
+                $out["msg"]="数据写入失败";
+            }
         }
         
         echo json_encode($out);
-        }
-        
-        public function shop_edit_req($id)
-        {
+    }
+
+    public function shop_edit_req($id)
+    {
         if(!$id)
-        return;
+            return;
         
         $name=$this->input->post("name");
         $name=trim($name);
         $des="";
         
         $out=array(
-        "ret"=>0,
-        "msg"=>"保存成功",
-        );
+            "ret"=>0,
+            "msg"=>"保存成功",
+            );
         
         if ($name=="")
         {
-        $out["ret"]=2;
-        $out["msg"]="请输入店名!";
+            $out["ret"]=2;
+            $out["msg"]="请输入店名!";
         }
         else
         {
-        $this->load->model("ShopModel");
-        $ret = $this->ShopModel->shop_update($id,$name,$des);
-        if (!$ret)
-        {
-        $out["ret"]=1;
-        $out["msg"]="数据写入失败";
-        }
+            $this->load->model("ShopModel");
+            $ret = $this->ShopModel->shop_update($id,$name,$des);
+            if (!$ret)
+            {
+                $out["ret"]=1;
+                $out["msg"]="数据写入失败";
+            }
         }
         
         echo json_encode($out);
-        }
-        
-        public function shop_list($page=1)
-        {
+    }
+
+    public function shop_list($page=1)
+    {
         $search_name = $this->input->get("name");
         $per_page=10;
         
@@ -318,42 +324,42 @@ class Admin extends CI_Controller{
         $data["search_name"]=$search_name;
         
         $this->load->view("shop_list",$data);
-        }
-        
-        public function shop_del_req($id)
-        {
+    }
+
+    public function shop_del_req($id)
+    {
         $this->load->model("ShopModel");
         $ret = $this->ShopModel->shop_del($id);
         if ($ret)
         {
-        echo "0";
+            echo "0";
         }
         else
         {
-        echo "1";
+            echo "1";
         }
-        }
-        
-        public function staff_del_req($id)
-        {
+    }
+
+    public function staff_del_req($id)
+    {
         $this->load->model("StaffModel");
         $ret = $this->StaffModel->staff_del($id);
         if ($ret)
         {
-        echo "0";
+            echo "0";
         }
         else
         {
-        echo "1";
+            echo "1";
         }
-        }
-        
-        
-        public function comment_list($staff_id,$page=1)
-        {
+    }
+
+
+    public function comment_list($staff_id,$page=1)
+    {
         if (!$staff_id)
         {
-        return;
+            return;
         }
         
         $this->load->model("CommentModel");
@@ -366,105 +372,105 @@ class Admin extends CI_Controller{
         $comment_list=$this->CommentModel->comment_list($staff_id,$page,$per_page);
         $data["list"]=$comment_list;
         $this->load->view("comment_list",$data);
-        }
-        
-        public function comment_del_req($comment_id)
-        {
+    }
+
+    public function comment_del_req($comment_id)
+    {
         $this->load->model("CommentModel");
         $ret = $this->CommentModel->comment_del($comment_id);
         if($ret)
         {
-        echo "0";
+            echo "0";
         }
         else
         {
-        echo "1";
+            echo "1";
         }
-        }
-        
-        public function comment_admin_replay($comment_id)
-        {
+    }
+
+    public function comment_admin_replay($comment_id)
+    {
         if(!$comment_id)
         {
-        return;
+            return;
         }
         
         $data["comment_id"]=$comment_id;
         
         $this->load->view("comment_admin_replay",$data);
-        }
-        
-        public function commment_admin_req($comment_id)
-        {
+    }
+
+    public function commment_admin_req($comment_id)
+    {
         $admin_id = 0;
         if (isset($_SESSION["admin_id"]))
         {
-        $admin_id=$_SESSION["admin_id"];
+            $admin_id=$_SESSION["admin_id"];
         }
         
         $comment_admin = $this->input->post("comment");
         
         $out=array(
-        "ret"=>0,
-        "msg"=>"提交成功",
-        );
+            "ret"=>0,
+            "msg"=>"提交成功",
+            );
         
         if ($comment_admin=="")
         {
-        $out["ret"]=2;
-        $out["msg"]="请输入店名!";
+            $out["ret"]=2;
+            $out["msg"]="请输入店名!";
         }
         else
         {
-        $this->load->model("CommentModel");
-        $ret = $this->CommentModel->comment_admin_add($comment_id,$comment_admin,$admin_id);
-        if (!$ret)
-        {
-        $out["ret"]=1;
-        $out["msg"]="数据写入失败";
-        }
+            $this->load->model("CommentModel");
+            $ret = $this->CommentModel->comment_admin_add($comment_id,$comment_admin,$admin_id);
+            if (!$ret)
+            {
+                $out["ret"]=1;
+                $out["msg"]="数据写入失败";
+            }
         }
         
         echo json_encode($out);
-        }
-        
-        
-        public function admin_update()
-        {
+    }
+
+
+    public function admin_update()
+    {
         $this->load->view("admin_update");
-        }
-        
-        public function admin_update_req()
-        {
+    }
+
+    public function admin_update_req()
+    {
         $passwd = $this->input->post("passwd");
         $passwd2 = $this->input->post("passwd2");
         $this->load->model("AdminModel");
         
         $out=array(
-        "ret"=>0,
-        "msg"=>"保存成功",
-        );
+            "ret"=>0,
+            "msg"=>"保存成功",
+            );
         
         if ($passwd && $passwd2 && $passwd==$passwd2)
         {
-        $ret = $this->AdminModel->admin_update(0,$passwd);
-        if (!$ret)
-        {
-        $out["msg"]="数据库写入失败";
-        $out["ret"]=1;
-        }
+            $ret = $this->AdminModel->admin_update(0,$passwd);
+            if (!$ret)
+            {
+                $out["msg"]="数据库写入失败";
+                $out["ret"]=1;
+            }
         }
         else
         {
-        $out["msg"]="两次输入密码不一致";
-        $out["ret"]=1;
+            $out["msg"]="两次输入密码不一致";
+            $out["ret"]=1;
         }
         
         echo json_encode($out);
-        }
-        
-        public function login_check()
-        {
+    }
+
+    public function login_check()
+    {
         $login_name="admin";
         $passwd = $this->input->post("passwd");
         
@@ -473,19 +479,19 @@ class Admin extends CI_Controller{
         $input_admin = md5($passwd);
         if ($input_admin == $admin_info["passwd"])
         {
-        $_SESSION["admin_id"]=$admin_info["id"];
-        $_SESSION["admin_login_name"]=$admin_info["login_name"];
-        echo "<script>parent.location='/admin/staff_list'</script>";
+            $_SESSION["admin_id"]=$admin_info["id"];
+            $_SESSION["admin_login_name"]=$admin_info["login_name"];
+            echo "<script>parent.location='/admin/staff_list'</script>";
         }
         else
         {
-        echo "<script>alert('密码错误！')</script>";
+            echo "<script>alert('密码错误！')</script>";
         }
-        }
-        
-        public function logout()
-        {
+    }
+
+    public function logout()
+    {
         session_destroy();
         header("Location:/admin");
-        }
-        }
+    }
+}
