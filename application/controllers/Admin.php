@@ -168,7 +168,7 @@ class Admin extends CI_Controller{
         while(($filename=readdir($handler))!==false){
             if($filename != "." && $filename != ".."){//文件夹文件名字为'.'和‘..’，不要对他们进行操作
                 if(is_dir($path."/".$filename)){// 如果读取的某个对象是文件夹，则递归
-                    _addFileToZip($path."/".$filename, $zip);
+                    // _addFileToZip($path."/".$filename, $zip);
                 }else{ //将文件加入zip对象
                     $zip->addFile($path."/".$filename);
                 }
@@ -190,11 +190,12 @@ class Admin extends CI_Controller{
             $value=$url;
             $errorCorrectionLevel = "L";
             $matrixPointSize = "7";
-            $filename = mb_convert_encoding($row["name"],"GB2312","UTF-8");
+            // $filename = mb_convert_encoding($row["name"],"GB2312","UTF-8");
+            $filename = $row["name"];
             QRcode::png($value, "qrcode/".$filename.".png", $errorCorrectionLevel, $matrixPointSize);
         }
         
-        @unlink('qrcode/code_'.$shop_id.'.zip');
+        @unlink('downloade/code_'.$shop_id.'.zip');
         $zip=new ZipArchive();
         if($zip->open('download/code_'.$shop_id.'.zip', ZipArchive::CREATE)=== TRUE){
             $this->_addFileToZip('qrcode', $zip); //调用方法，对要打包的根目录进行操作，并将ZipArchive的对象传递给方法
