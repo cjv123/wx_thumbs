@@ -10,7 +10,6 @@ class Staff extends CI_Controller{
 	public function index()
 	{
 		// echo "staff";
-		echo urldecode("http%3A%2F%2Fcoder4game.com%3A8088%2Fstaff%2Fthumb%2F18");
 	}
 
 	public function qrcode2Page($staff_id)

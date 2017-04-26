@@ -183,6 +183,7 @@ class Admin extends CI_Controller{
         require_once ("phpqrcode.php");
         $this->load->model("StaffModel");
         $list = $this->StaffModel->staff_list(1,1000,"",$shop_id);
+        @array_map('unlink', glob('qrcode/*.png'));
         foreach($list as $row)
         {
             $url = $this->StaffModel->get_qrcode2page_url().$row["id"];
