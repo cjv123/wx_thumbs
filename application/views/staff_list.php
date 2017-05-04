@@ -10,6 +10,9 @@
   <link rel="stylesheet" type="text/css" href="/css/page.css">
   <script src="/js/jquery-1.6.4.min.js" type="text/javascript"></script>
   <script src="/js/Chart.min.js" type="text/javascript"></script>
+  <style>
+    td{display:table-cell; vertical-align:middle}
+  </style>
 </head>
 
 <body>
@@ -66,6 +69,7 @@
               </div>
               <div class="condition">
                 <input type="submit" value="查询" class="dia_btn">
+                <input type="button" value="导出表格文件" class="dia_btn" onclick="location='/admin/staff_csv_make';">
               </div>
             </form>
           </div>
@@ -74,6 +78,7 @@
             <table id="tbbg" width="100%" border="0" cellspacing="0" cellpadding="0">
               <tbody>
                 <tr class="trhover">
+                  <td><span class="gray">头像</span></td>
                   <td><span class="gray">姓名</span></td>
                   <td><span class="gray">所在分店</span></td>
                   <td><span class="gray">平均评分</span></td>
@@ -81,7 +86,8 @@
                 </tr>
 
                 <?php  foreach ($list as $index=>$item){?>
-                  <tr class="<?=($index%2==0)?'t1':'t2'?>">
+                  <tr class="<?=($index%2==0)?'t1':'t2'?>" >
+                    <td><?php if($item["header"]){?> <img width="100" height="100" src="/header/<?=$item["header"]?>" alt=""> <?php }?></td>
                     <td title="姓名">
                       <?=$item["name"]?><i class="pcm_pc"></i></td>
                     <td title="所在分店">

@@ -25,9 +25,9 @@ class StaffModel extends CI_Model{
         return $url;
     }
     
-    public function staff_add($name,$des,$job,$shopId)
+    public function staff_add($name,$des,$job,$shopId,$headerFilename)
     {
-        return $this->db->query("insert into staffs values('','{$name}','{$des}','{$job}','{$shopId}')");
+        return $this->db->query("insert into staffs values('','{$name}','{$des}','{$job}','{$shopId}','{$headerFilename}')");
     }
     
     public function staff_list($page=1,$per_page=20,$searchName="",$search_shop_id="")
@@ -85,14 +85,25 @@ class StaffModel extends CI_Model{
         return $query->row_array();
     }
     
-    public function staff_update($staffId,$name,$des,$job,$shopId)
+    public function staff_update($staffId,$name,$des,$job,$shopId,$headerFilename="")
     {
-        $sql ="update staffs set name='{$name}',des='{$des}',job='{$job}',shop_id='{$shopId}' where id={$staffId}";
+        $headerUpdateSql="";
+        if ($headerFilename)
+        {
+            $headerUpdateSql=",header='{$headerFilename}'";
+        }
+        $sql ="update staffs set name='{$name}',des='{$des}',job='{$job}',shop_id='{$shopId}'{$headerUpdateSql} where id={$staffId}";
         return $this->db->query($sql);
     }
     
     public function staff_del($staffId)
     {
+        $staffInfo = $this->staff_info($staffId);
+        if ($staffInfo && $staffInfo["header"])
+        {
+            @unlink("header/".$staffInfo["header"]);
+        }
+
         $sql ="delete from staffs where id={$staffId}";
         $this->db->query($sql);
         $sql ="delete from comment where staff_id={$staffId}";

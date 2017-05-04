@@ -23,6 +23,27 @@ class Admin extends CI_Controller{
     public function admin_home()
     {
     }
+
+    public function staff_csv_make()
+    {
+        $this->load->model("StaffModel");
+        $staff_list = $this->StaffModel->staff_list(1,5000);
+        $filename = md5(uniqid ( time (), true )).".csv";
+        $file = fopen("download/".$filename,"w");
+
+        fputcsv($file,array("姓名","职位","所在分店","平均评分"));
+        foreach ($staff_list as $row) {
+            $linestr=array($row["name"],$row["job"],$row["shop_name"],$row["star_avg"]);
+            fputcsv($file,$linestr);
+        }
+        fclose($file);
+
+        header('Content-Type: application/octet-stream');
+        header("Content-Disposition: attachment; filename=\"staff.csv\"");
+        header('Content-Transfer-Encoding: binary');
+        @readfile("download/".$filename);
+        @unlink("download/".$filename);
+    }
     
     public function staff_list($page=1)
     {
@@ -74,10 +95,12 @@ class Admin extends CI_Controller{
         $name=$this->input->post("name");
         $name=trim($name);
         $des="";
-        $job="";
+        $job=$this->input->post("job");
         $shopId=$this->input->post("shop");
         
         $this->load->model("StaffModel");
+        
+        echo "<script src=\"/js/jquery-1.6.4.min.js\" type=\"text/javascript\"></script>";
         
         $out=array(
             "ret"=>0,
@@ -96,36 +119,81 @@ class Admin extends CI_Controller{
         }
         else
         {
-            $this->load->model("StaffModel");
-            $ret = $this->StaffModel->staff_add($name,$des,$job,$shopId);
-            if (!$ret)
+            $uploadOK=true;
+            $headerFilename="";
+            if (isset($_FILES["head"]["name"]))
             {
-                $out["ret"]=1;
-                $out["msg"]="数据写入失败";
+                if ((($_FILES["head"]["type"] == "image/gif")
+                    || ($_FILES["head"]["type"] == "image/jpeg")
+                    || ($_FILES["head"]["type"] == "image/png")
+                    || ($_FILES["head"]["type"] == "image/pjpeg"))
+                    && ($_FILES["head"]["size"] < 1024*100))
+                {
+                    $filename = md5(uniqid ( time (), true ).$_FILES["head"]["name"]).".png";
+                    @move_uploaded_file($_FILES["head"]["tmp_name"],"header/" . $filename);
+                    $headerFilename = $filename;
+                }
+                else
+                {
+                    $uploadOK=false;
+                    $out["ret"]=1;
+                    $out["msg"]="头像文件必须是小于100k的图片格式!";
+                }
             }
+
+            if ($uploadOK==true)
+            {
+                $this->load->model("StaffModel");
+                $ret = $this->StaffModel->staff_add($name,$des,$job,$shopId,$headerFilename);
+                if (!$ret)
+                {
+                    $out["ret"]=1;
+                    $out["msg"]="数据写入失败";
+                }
+            }
+            
         }
+        echo "<script>\$(\"#alert\",parent.document).html(\"{$out['msg']}\");</script>";
+        if ($out["ret"]==0)
+        {
+            echo "<script>\$(\"#name\",parent.document).val('');</script>";
+            echo "<script>\$(\"#alert\",parent.document).css('color','#00ff00');</script>";
+        }
+        else
+        {
+            echo "<script>\$(\"#alert\",parent.document).css('color','#ff0000');</script>";
+        }
+        echo "<script>\$(\"#loading\",parent.document).hide();</script>";
+        echo "<script>\$('#submit',parent.document).removeAttr(\"disabled\");</script>";
+        echo "<script>setTimeout(function(){\$(\"#alert\",parent.document).html('');}, 1500);</script>";
         
-        echo json_encode($out);
+        
+        // echo json_encode($out);
     }
     
     public function staff_edit_req($staff_id)
     {
         if(!$staff_id)
+        {
             return;
+        }
         
         $name=$this->input->post("name");
         $name=trim($name);
         $des="";
-        $job="";
+        $job=$this->input->post("job");
         $shopId=$this->input->post("shop");
         
         $this->load->model("StaffModel");
+
+        echo "<script src=\"/js/jquery-1.6.4.min.js\" type=\"text/javascript\"></script>";
         
         $out=array(
             "ret"=>0,
             "msg"=>"保存成功",
             );
         
+        $headerFilename="";
         if ($shopId=="")
         {
             $out["ret"]=2;
@@ -138,16 +206,62 @@ class Admin extends CI_Controller{
         }
         else
         {
-            $this->load->model("StaffModel");
-            $ret = $this->StaffModel->staff_update($staff_id,$name,$des,$job,$shopId);
-            if (!$ret)
+            $uploadOK=true;
+            if (isset($_FILES["head"]["name"]))
             {
-                $out["ret"]=1;
-                $out["msg"]="数据写入失败";
+                if ((($_FILES["head"]["type"] == "image/gif")
+                    || ($_FILES["head"]["type"] == "image/jpeg")
+                    || ($_FILES["head"]["type"] == "image/png")
+                    || ($_FILES["head"]["type"] == "image/pjpeg"))
+                    && ($_FILES["head"]["size"] < 1024*100))
+                {
+                    $staffInfo = $this->StaffModel->staff_info($staff_id);
+                    if ($staffInfo && $staffInfo["header"])
+                    {
+                        @unlink("header/".$staffInfo["header"]);
+                    }
+
+                    $filename = md5(uniqid ( time (), true ).$_FILES["file"]["name"]).".png";
+                    @move_uploaded_file($_FILES["head"]["tmp_name"],"header/" . $filename);
+                    $headerFilename = $filename;
+                }
+                else
+                {
+                    $uploadOK=false;
+                    $out["ret"]=1;
+                    $out["msg"]="头像文件必须是小于100k的图片格式!";
+                }
             }
+
+            if ($uploadOK==true)
+            {
+                $this->load->model("StaffModel");
+                $ret = $this->StaffModel->staff_update($staff_id,$name,$des,$job,$shopId,$headerFilename);
+                if (!$ret)
+                {
+                    $out["ret"]=1;
+                    $out["msg"]="数据写入失败";
+                }
+            }
+
+            
         }
         
-        echo json_encode($out);
+        echo "<script>\$(\"#alert\",parent.document).html(\"{$out['msg']}\");</script>";
+        if ($out["ret"]==0)
+        {
+            echo "<script>\$(\"#name\",parent.document).val('');</script>";
+            echo "<script>\$(\"#alert\",parent.document).css('color','#00ff00');</script>";
+            echo "<script>\$(\"#img_head\",parent.document).attr('src','/header/{$headerFilename}');</script>";
+        }
+        else
+        {
+            echo "<script>\$(\"#alert\",parent.document).css('color','#ff0000');</script>";
+        }
+        echo "<script>\$(\"#loading\",parent.document).hide();</script>";
+        echo "<script>\$('#submit',parent.document).removeAttr(\"disabled\");</script>";
+        echo "<script>setTimeout(function(){\$(\"#alert\",parent.document).html('');}, 1500);</script>";
+        // echo json_encode($out);
     }
     
     
@@ -198,13 +312,13 @@ class Admin extends CI_Controller{
         }
         
         @unlink('downloade/code_'.$shop_id.'.zip');
-        $download_filename ='download/code_'.$shop_id.'.zip'; 
+        $download_filename ='download/code_'.$shop_id.'.zip';
         $zip=new ZipArchive();
         if($zip->open($download_filename, ZipArchive::CREATE)=== TRUE)
         {
             $this->_addFileToZip('qrcode', $zip); //调用方法，对要打包的根目录进行操作，并将ZipArchive的对象传递给方法
             $zip->close(); //关闭处理的zip文件
-
+            
             header('Content-Type: application/octet-stream');
             header("Content-Disposition: attachment; filename=\"qrcode.zip\"");
             header('Content-Transfer-Encoding: binary');
