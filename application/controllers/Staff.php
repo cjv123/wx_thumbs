@@ -63,6 +63,12 @@ class Staff extends CI_Controller{
 				$wx_name = $res_arr["nickname"];
 			}
 		}
+		
+		if($wx_name=="")
+		{
+			$wx_name="Anonymous";
+		}
+		
 		return $wx_name;
 	}
 
@@ -100,6 +106,8 @@ class Staff extends CI_Controller{
 
 		$star = $this->input->post("star");
 		$text = $this->input->post("text");
+		$preg = "/<script[\s\S]*?<\/script>/i";
+		$text = preg_replace($preg,"",$text,3); 
 		$wx_name = $this->input->post("wx_name");
 		$this->load->model("CommentModel");
 		$ret = $this->CommentModel->comment_add($star,$text,$staff_id,$wx_name);

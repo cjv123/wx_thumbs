@@ -81,6 +81,7 @@
                   <td><span class="gray">头像</span></td>
                   <td><span class="gray">姓名</span></td>
                   <td><span class="gray">所在分店</span></td>
+                  <td><span class="gray">职位</span></td>
                   <td><span class="gray">平均评分</span></td>
                   <td width="23%"><span class="gray">操作</span></td>
                 </tr>
@@ -91,9 +92,14 @@
                     <td title="姓名">
                       <?=$item["name"]?><i class="pcm_pc"></i></td>
                     <td title="所在分店">
-                      <?=$item["shop_name"]?><i class="pcm_pc"></i></td>
+                      <?=$item["shop_name"]?><i class="pcm_pc"></i>
+                    </td>
+                    <td title="职位">
+                      <?=$item["job"]?><i class="pcm_pc"></i>
+                    </td>
                     <td title="评分">
-                      <?=round($item["star_avg"],1)?><i class="pcm_pc"></i></td>
+                      <?=round($item["star_avg"],1)?><i class="pcm_pc"></i>
+                    </td>
                     <td>
                       <span class="ed" onclick="get_link(<?=$item["id"]?>);">二维码</span>
                       <span class="ed" onclick="reply(<?=$item["id"]?>);">点赞列表</span>

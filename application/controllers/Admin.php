@@ -31,7 +31,11 @@ class Admin extends CI_Controller{
         $filename = md5(uniqid ( time (), true )).".csv";
         $file = fopen("download/".$filename,"w");
 
-        fputcsv($file,array("姓名","职位","所在分店","平均评分"));
+        $field = array("姓名","职位","所在分店","平均评分");
+        foreach ($field as $key => $value) {
+            $field[$key]=iconv("utf-8","gb2312",$value);
+        }
+        fputcsv($file,$field);
         foreach ($staff_list as $row) {
             $linestr=array($row["name"],$row["job"],$row["shop_name"],$row["star_avg"]);
             fputcsv($file,$linestr);
@@ -121,7 +125,7 @@ class Admin extends CI_Controller{
         {
             $uploadOK=true;
             $headerFilename="";
-            if (isset($_FILES["head"]["name"]))
+            if ($_FILES["head"]["name"])
             {
                 if ((($_FILES["head"]["type"] == "image/gif")
                     || ($_FILES["head"]["type"] == "image/jpeg")
@@ -157,6 +161,7 @@ class Admin extends CI_Controller{
         if ($out["ret"]==0)
         {
             echo "<script>\$(\"#name\",parent.document).val('');</script>";
+            echo "<script>\$(\"#file\",parent.document).val('');</script>";
             echo "<script>\$(\"#alert\",parent.document).css('color','#00ff00');</script>";
         }
         else

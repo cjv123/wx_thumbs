@@ -121,10 +121,13 @@
             
           </div>
           <p><?=$row['text']?></p>
-          <?php if($row["comment_admin"]){?>
-          <blockquote>店长回复:<?=$row["comment_admin"]?></blockquote>
-          <?php }?>
+          
         </div>
+        <footer class="am-comment-footer">
+          <div class="am-comment-actions">
+            <a href=""><i class="am-icon-reply">  回复</i></a>
+          </div>
+        </footer>
       </div>
     </li>
     <?php }?>
