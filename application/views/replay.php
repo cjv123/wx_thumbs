@@ -39,7 +39,6 @@
   <link rel="stylesheet" href="/assets/css/amazeui.min.css">
   <link rel="stylesheet" href="/assets/css/app.css">
 
-
 </head>
 <body>
 <!--[if lte IE 9]>
@@ -48,12 +47,20 @@
   以获得更好的体验！</p>
 <![endif]-->
 
+
+
 <!-- 页面内容 开发时删除 -->
 <div class="am-g am-g-fixed am-margin-top">
-  <div class="am-u-sm-12">
-    <h1><?php if ($ret){echo "提交成功！";}else{echo "提交失败！可能数据库出现异常!";}?></h1>
-    <a href="/staff/thumb/<?=$staff_id?>">返回</a>
-  </div>
+   <form class="am-form"  id="thumb_form">
+    <fieldset>
+        <div class="am-form-group">
+          <label for="doc-ta-1">回复<?=$to_name?>(最多500字):</label>
+          <textarea name="text" class="" rows="5" id="replay_text"></textarea>
+          <input name="wx_name" id="wx_name" type="hidden" value="<?=$wx_name?>" />          
+        </div>
+    </filedset>
+  </form>
+    <p><button type="button" class="am-btn am-btn-default" onclick="onSubmit(this);">提交</button></p>
 </div>
 
 
@@ -78,7 +85,26 @@
 <script src="/assets/js/amazeui.min.js"></script>
 
 <script type="text/javascript">
+function onSubmit(button) {
+    var replayText = $("#replay_text").val();
+    if (replayText=="")
+    {
+        alert("没有输入回复内容！");
+        return;
+    }
+    
+    if (replayText.length>999)
+    {
+        alert("输入字数超出最大限制！");
+        return;
+    }
 
+    $(button).attr('disabled', "true");
+    $.post('/staff/replay_req/<?=$comment_id?>/<?=$staff_id?>', $("#thumb_form").serialize(), function(data) {
+        $(button).removeAttr("disabled");
+        location='/staff/thumb_res/'+data+"/<?=$staff_id?>";
+    });
+}
 </script>
 
 </body>

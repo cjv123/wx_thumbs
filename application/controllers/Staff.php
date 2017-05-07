@@ -66,7 +66,7 @@ class Staff extends CI_Controller{
 		
 		if($wx_name=="")
 		{
-			$wx_name="Anonymous";
+			$wx_name="user_".(time()+rand());
 		}
 		
 		return $wx_name;
@@ -81,6 +81,7 @@ class Staff extends CI_Controller{
 		}
 		$this->load->model("StaffModel");
 		$wx_name = $this->_get_wxname();
+		$_SESSION["wx_name"]=$wx_name;
 		// print_r($wx_name);
 
 		$this->load->model("CommentModel");
@@ -92,6 +93,10 @@ class Staff extends CI_Controller{
 		$data=$info;
 		$data["staff_id"]=$staff_id;
 		$data["list"]=$this->CommentModel->comment_list($staff_id);
+		foreach ($data["list"] as $i=>$row) {
+			$reply_list = $this->CommentModel->reply_list($row["id"]);
+			$data["list"][$i]["reply_list"]=$reply_list;
+		}
 		$data["wx_name"]=$wx_name;
 		// print_r($data);
 		$this->load->view("thumb",$data);
@@ -115,12 +120,36 @@ class Staff extends CI_Controller{
 		// header("Location:/staff/thumb_res/".$ret);
 	}
 	
-	public function thumb_res($ret)
+	public function thumb_res($ret,$staff_id)
 	{
 		$data["ret"]=$ret;
+		$data["staff_id"]=$staff_id;
 		$this->load->view("thumb_res",$data);
 	}
+	
+	public function replay($comment_id,$staff_id)
+	{
+		$this->load->model("StaffModel");
+		$staff_info = $this->StaffModel->staff_info($staff_id);
+		$to_name="";
+		if ($staff_info)
+			$to_name=$staff_info["name"];
+		$data["comment_id"]=$comment_id;
+		$data["wx_name"]=$_SESSION["wx_name"];
+		$data["to_name"]=$to_name;
+		$data["staff_id"]=$staff_id;
+		$this->load->view("replay",$data);
+	}
 
+	public function replay_req($comment_id)
+	{
+		$this->load->model("CommentModel");
+		$text = $this->input->post("text");
+		$replay = $comment_id;
+		$wx_name=$_SESSION["wx_name"];
+		$ret = $this->CommentModel->comment_replay($text,$wx_name,$replay);
+		echo $ret;
+	}
 
 	public function staff_list($page=1)
 	{

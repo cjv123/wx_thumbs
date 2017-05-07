@@ -32,10 +32,19 @@ class CommentModel extends CI_Model{
 
     public function comment_list($staff_id,$page=1,$per_page=100)
     {
-        $sql ="select comment.*,staffs.name staff_name from comment,staffs 
-        where comment.staff_id=staffs.id and comment.staff_id={$staff_id} order by comment.id desc limit ".($page-1)*$per_page.",".$per_page;
+        $sql ="select comment.*,staffs.name staff_name from comment,staffs  
+        where comment.reply='0' and comment.staff_id=staffs.id and comment.staff_id={$staff_id} order by comment.id desc limit ".($page-1)*$per_page.",".$per_page;
+        // echo $sql;
         $query = $this->db->query($sql);
         $array =$query->result_array(); 
+        return $array;
+    }
+    
+    public function reply_list($reply_id)
+    {
+        $sql ="select * from comment where reply = {$reply_id}";
+        $query =$this->db->query($sql);
+        $array = $query->result_array();
         return $array;
     }
 
@@ -56,4 +65,10 @@ class CommentModel extends CI_Model{
     }
 
 
+    public function comment_replay($text,$wx_name,$replay)
+    {
+        $sql="insert into comment values('','','{$text}','','','0','{$replay}','{$wx_name}',".time().")";
+        $query = $this->db->query($sql);
+        return $query;
+    }
 }

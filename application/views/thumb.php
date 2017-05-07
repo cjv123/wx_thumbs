@@ -93,45 +93,67 @@
 
   <ul class="am-comments-list">
     <?php foreach($list as $row){ ?>
-    <li class="am-comment">
+    <li class="am-comment" name="comment-<?=$row['id']?>">
       <a href="#link-to-user-home">
       </a>
       <div class="am-comment-main">
         <header class="am-comment-hd">
           <div class="am-comment-meta">
-            <a href="#link-to-user" class="am-comment-author"><?=$row["wx_name"]?></a> 点赞 
+            <a href="#link-to-user" class="am-comment-author"><?=$row["wx_name"]?></a> <b>点赞</b>于 
             <time datetime="<?=date("Y-m-d H:i:s",$row['time'])?>" title="<?=date("Y-m-d H:i:s",$row['time'])?>"><?=date("Y-m-d H:i:s",$row['time'])?></time>
           </div>
         </header>
         <div class="am-comment-bd">
           <div>
             <?php 
-            for($i=0;$i<5;$i++)
-            { 
-              if ($i<intval($row["star"]))
-              {
-                echo "<input id='starimg' type='button'/>";
-              }
-              else
-              {
-                echo "<input id='starimg' type='button' style='background-position:right center'  />";
-              }
-            }
+                for($i=0;$i<5;$i++)
+                { 
+                    if ($i<intval($row["star"]))
+                    {
+                      echo "<input id='starimg' type='button'/>";
+                    }
+                    else
+                    {
+                      echo "<input id='starimg' type='button' style='background-position:right center'  />";
+                    }
+                }
             ?>
-            
           </div>
           <p><?=$row['text']?></p>
-          
+          <?php foreach($row["reply_list"] as $reply){?>
+          <blockquote><?=$reply["text"]?></blockquote>
+          <?php }?>
         </div>
+        
+        
+        
         <footer class="am-comment-footer">
           <div class="am-comment-actions">
-            <a href=""><i class="am-icon-reply">  回复</i></a>
+            <a href="javascript:void(0);"><i class="am-icon-reply">  回复</i></a>
+            <input type="hidden" id="to_name" value="<?=$row['wx_name']?>">
+            <input type="hidden" id="comment_id" value="<?=$row['id']?>">
           </div>
         </footer>
       </div>
     </li>
     <?php }?>
   </ul>
+</div>
+
+
+
+<div class="am-modal am-modal-prompt" tabindex="-1" id="my-prompt">
+  <div class="am-modal-dialog">
+    <div class="am-modal-hd"></div>
+    <div class="am-modal-bd">
+      <p></p>
+      <textarea name="text"  rows="3" cols="40" class="am-modal-prompt-input" ></textarea>
+    </div>
+    <div class="am-modal-footer">
+      <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+      <span class="am-modal-btn" data-am-modal-confirm>提交</span>
+    </div>
+  </div>
 </div>
 
 
@@ -182,12 +204,43 @@
   
   function onSubmit(button) {
     $(button).attr('disabled', "true");
-    $("#alert").html("");
     $.post('/staff/thumb_req/<?=$staff_id?>', $("#thumb_form").serialize(), function(data) {
         $(button).removeAttr("disabled");
-        location='/staff/thumb_res/'+data;
+        location='/staff/thumb_res/'+data+"/<?=$staff_id?>";
     });
-}
+  }
+
+/**/
+  $('.am-icon-reply').on('click',function(){
+     var to_name = $(this).parent().parent().children("#to_name").val();
+     if (to_name)
+     {
+       $(".am-modal-dialog p").html("回复"+to_name+":");
+     }
+     
+     var comment_id = $(this).parent().parent().children("#comment_id").val();;
+
+     $('#my-prompt').modal({
+        relatedTarget: this,
+        onConfirm: function(e) {
+            // alert('你输入的是：' + e.data || '')
+            if (e.data=="")
+            {
+              alert("回复内容为空!");
+              return;
+            }
+            $.post('/staff/replay_req/'+comment_id,{text:"回复"+to_name+":"+e.data},function(data){
+              if(data=="1")
+              {
+                location='/staff/thumb/<?=$staff_id?>#'+comment_id;
+              }
+            });
+        },
+        onCancel: function(e) {
+            // alert('不想说!');
+        }
+    });
+  });
     
 </script>
 
