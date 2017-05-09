@@ -32,6 +32,11 @@ class Staff extends CI_Controller{
 
 	private function _get_wxname()
 	{
+		if (isset($_SESSION["admin_login_name"]))
+		{
+			return "店长";
+		}
+
 		$wx_appid = $this->StaffModel->wx_appid;
 		$wx_appsecret= $this->StaffModel->wx_appsecret;
 
@@ -98,6 +103,10 @@ class Staff extends CI_Controller{
 			$data["list"][$i]["reply_list"]=$reply_list;
 		}
 		$data["wx_name"]=$wx_name;
+		$this->load->model("AdminModel");
+		$admin_setting = $this->AdminModel->get_setting();
+		$data["welcome"]=$admin_setting["welcome"];
+		$data["thumb_bg"]=$admin_setting["thumb_bg"];
 		// print_r($data);
 		$this->load->view("thumb",$data);
 	}

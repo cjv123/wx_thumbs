@@ -21,7 +21,7 @@
       <ul>
         <li class="active"><a href="/admin/staff_list">员工</a></li>
         <li><a href="/admin/shop_list">分店</a></li>
-        <li><a href="/admin/admin_update">后台管理员</a></li>
+        <li><a href="/admin/setting">设置</a></li>
         <li>
           <a href="#"></a>
         </li>
@@ -66,14 +66,14 @@
                 <tr class="t1">
                   <td width="70"><span class="title">姓名</span></td>
                   <td width="650">
-                    <input name="name" id="name" type="text" class="input text2" value="" placeholder="最多20个汉字" maxlength="20">
+                    <input name="name" id="name" type="text" class="input text2" value="" placeholder="最多20个汉字" maxlength="40">
                   </td>
                   <td style="vertical-align:inherit"><span class="zhu">*</span></td>
                 </tr>
                 <tr class="t1">
                   <td width="70"><span class="title">职位</span></td>
                   <td width="650">
-                    <input type="text" name="job" class="input text2" value="" placeholder="最多20个汉字" maxlength="20">
+                    <input type="text" name="job" class="input text2" value="" placeholder="最多20个汉字" maxlength="40">
                   </td>
                   <td style="vertical-align:inherit"><span class="zhu"></span></td>
                 </tr>

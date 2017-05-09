@@ -19,8 +19,8 @@
     <div class="toolbar">
       <ul>
         <li><a href="/admin/staff_list">员工</a></li>
-        <li class="active"><a href="/admin/shop_list">分店</a></li>
-        <li><a href="/admin/setting">设置</a></li>
+        <li><a href="/admin/shop_list">分店</a></li>
+        <li class="active" ><a href="/admin/setting">设置</a></li>
         <li>
           <a href="#"></a>
         </li>
@@ -38,8 +38,8 @@
       <div class="layout-sidebar">
         <div class="box">
           <ul class="ui-list leftclick">
-            <li><a href="/admin/shop_list">分店列表</a></li>
-            <li class="active"><a href="/admin/shop_add">添加分店</a></li>
+            <li class="active"><a href="/admin/shop_list">设置</a></li>
+            <li><a href="/admin/admin_update">管理员密码</a></li>
           </ul>
         </div>
 
@@ -54,28 +54,45 @@
       <div class="layout-main">
 
         <div class="box">
-          <h3>添加分店</h3>
+          <h3>设置</h3>
           <div class="ui-table-row">
-            <form action="" id="shop_form">
+            <form id="set_form" action="/admin/setting_save" target="action_frame" method="post" enctype="multipart/form-data">
               <table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr class="t1">
-                  <td width="70"><span class="title">分店名称</span></td>
+                  <td width="70"><span class="title">欢迎字符</span></td>
                   <td width="650">
-                    <input name="name" id="name" type="text" class="input text2" value="" placeholder="最多20个汉字" maxlength="40">
+                    <input name="welcome" id="welcome" type="text" class="input text2" value="<?=$welcome?>" placeholder="最多50个汉字" maxlength="100">
                   </td>
                   <td style="vertical-align:inherit"><span class="zhu"></span></td>
                 </tr>
-                <!--<tr class="t1">
-                  <td width="70"><span class="title">分店描述</span></td>
+                <tr class="t1">
+                  <td width="80"><span class="title">点赞次数限制</span></td>
                   <td width="650">
-                    <input type="text" name="des" class="input text2" value="" placeholder="最多20个汉字" maxlength="20">
+                    <input name="thumb_limit" id="thumb_limit" type="text" class="input text2" value="<?=$thumb_limit?>" placeholder="只能填写数字" maxlength="10">
                   </td>
                   <td style="vertical-align:inherit"><span class="zhu"></span></td>
-                </tr>-->
+                </tr>
+                <tr class="t1">
+                  <td width="70"><span class="title">点赞页背景</span></td>
+                  <td width="650">
+                    <input type="file" name="thumb_bg" id="thumb_bg" />  
+                  </td>
+                  <td style="vertical-align:inherit"><span class="zhu">建议图片分辨率:640*1136</span></td>
+                </tr>
+                <tr class="t1">
+                  <td width="70"><span class="title">背景预览</span></td>
+                  <td width="650">
+                      <?php if($thumb_bg){?>
+                      <img src="/header/<?=$thumb_bg?>" alt="" width="320" height="568">
+                      <?php }?>
+                  </td>
+                  <td style="vertical-align:inherit"><span class="zhu"></span></td>
+                </tr>
               </table>
             </form>
             <div class="submit-box">
-              <input name="submit" value="确定保存" tabindex="3" onclick="onSubmit(this)" type="submit" class="ufi-button" />
+              <iframe src="" width="0" height="0" frameborder="0" name="action_frame"></iframe>
+              <input name="submit" id="submit" value="确定保存" tabindex="3" onclick="onSubmit(this)" type="submit" class="ufi-button" />
               <span style="display:none" id="loading"><img width="20" height="20" src="/images/loading.gif" alt=""></span>
               <span id="alert"><span>
             </div>
@@ -99,23 +116,7 @@
       $(button).attr('disabled', "true");
       $("#loading").show();
       $("#alert").html("");
-      $.post('/admin/shop_add_seq', $("#shop_form").serialize(), function(data) {
-        $(button).removeAttr("disabled");
-        $("#loading").hide();
-        $("#alert").html(data.msg);
-        if (data.ret==0)
-        {
-          $("#name").val("");
-          $("#alert").css('color','#00ff00');
-        }
-        else
-        {
-          $("#alert").css('color','#ff0000');
-        }
-        setTimeout(function() {
-          $("#alert").html("");
-        }, 1500);
-      },'json');
+      $("#set_form").submit();
     }
   </script>
 

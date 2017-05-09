@@ -497,14 +497,7 @@ class Admin extends CI_Controller{
     {
         $this->load->model("CommentModel");
         $ret = $this->CommentModel->comment_del($comment_id);
-        if($ret)
-        {
-            echo "0";
-        }
-        else
-        {
-            echo "1";
-        }
+        echo $ret;
     }
 
     public function comment_admin_replay($comment_id)
@@ -551,6 +544,85 @@ class Admin extends CI_Controller{
         }
         
         echo json_encode($out);
+    }
+
+    public function setting()
+    {
+        $this->load->model("AdminModel");
+        $setting = $this->AdminModel->get_setting();
+        $data = $setting;
+        $this->load->view("setting",$data);
+    }
+
+    public function setting_save()
+    {
+        $welcome=$this->input->post("welcome");
+        $thumb_limit=$this->input->post("thumb_limit");
+        
+        $this->load->model("AdminModel");
+        
+        echo "<script src=\"/js/jquery-1.6.4.min.js\" type=\"text/javascript\"></script>";
+        
+        $out=array(
+            "ret"=>0,
+            "msg"=>"保存成功",
+            );
+        
+        $thumb_limit=(int)$thumb_limit;
+
+        if($thumb_limit==0)
+        {
+            $out["ret"]=1;
+            $out["msg"]="点赞限制只能为数字";
+        }
+        else
+        {
+            $uploadOK=true;
+            $bgFileName="";
+            if ($_FILES["thumb_bg"]["name"])
+            {
+                if ((($_FILES["thumb_bg"]["type"] == "image/gif")
+                    || ($_FILES["thumb_bg"]["type"] == "image/jpeg")
+                    || ($_FILES["thumb_bg"]["type"] == "image/png")
+                    || ($_FILES["thumb_bg"]["type"] == "image/pjpeg"))
+                    && ($_FILES["thumb_bg"]["size"] < 1024*300))
+                {
+                    $filename = "thumb_bg.png";
+                    @move_uploaded_file($_FILES["thumb_bg"]["tmp_name"],"header/" . $filename);
+                    $bgFileName = $filename;
+                }
+                else
+                {
+                    $uploadOK=false;
+                    $out["ret"]=1;
+                    $out["msg"]="背景文件必须是小于300k的图片格式!";
+                }
+            }
+
+            if ($uploadOK==true)
+            {
+                $ret = $this->AdminModel->setting_save($welcome,$thumb_limit,$bgFileName);
+                if (!$ret)
+                {
+                    $out["ret"]=1;
+                    $out["msg"]="数据写入失败";
+                }
+            }
+            
+        }
+        echo "<script>\$(\"#alert\",parent.document).html(\"{$out['msg']}\");</script>";
+        if ($out["ret"]==0)
+        {
+            echo "<script>\$(\"#alert\",parent.document).css('color','#00ff00');</script>";
+            echo "<script>parent.window.location.reload();</script>";
+        }
+        else
+        {
+            echo "<script>\$(\"#alert\",parent.document).css('color','#ff0000');</script>";
+        }
+        echo "<script>\$(\"#loading\",parent.document).hide();</script>";
+        echo "<script>\$('#submit',parent.document).removeAttr(\"disabled\");</script>";
+        echo "<script>setTimeout(function(){\$(\"#alert\",parent.document).html('');}, 1500);</script>";
     }
 
 

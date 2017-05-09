@@ -24,7 +24,7 @@
       <ul>
         <li class="active"><a href="/admin/staff_list">员工</a></li>
         <li><a href="/admin/shop_list">分店</a></li>
-        <li><a href="/admin/admin_update">后台管理员</a></li>
+        <li><a href="/admin/setting">设置</a></li>
         <li>
           <a href="#"></a>
         </li>
@@ -102,7 +102,11 @@
                     </td>
                     <td>
                       <span class="ed" onclick="get_link(<?=$item["id"]?>);">二维码</span>
-                      <span class="ed" onclick="reply(<?=$item["id"]?>);">点赞列表</span>
+                      <span class="ed">
+                        <a href="/staff/thumb/<?=$item["id"]?>" target="_blank">
+                          <span class="ed">点赞管理</span>
+                        </a>
+                      </span>
                       <span class="ed" onclick="edit(<?=$item["id"]?>);">编辑</span>
                       <span class="ed" onclick="del(<?=$item["id"]?>);">删除</span>
                     </td>
@@ -179,7 +183,7 @@
         return;
       }
 
-      location = "/admin/comment_list/" + id;
+      location = "/staff/thumb/" + id;
     }
 
     function close_online() {

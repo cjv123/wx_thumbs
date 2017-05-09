@@ -8,7 +8,7 @@ class CommentModel extends CI_Model{
         $this->load->database();
     }
     
-    public function comment_add($star,$text,$staff_id,$wx_name,$replay="") 
+    public function comment_add($star,$text,$staff_id,$wx_name,$replay="0") 
     {
         $sql="insert into comment values('','{$star}','{$text}','','','{$staff_id}','{$replay}','{$wx_name}',".time().")";
         $query = $this->db->query($sql);
@@ -33,7 +33,7 @@ class CommentModel extends CI_Model{
     public function comment_list($staff_id,$page=1,$per_page=100)
     {
         $sql ="select comment.*,staffs.name staff_name from comment,staffs  
-        where comment.reply='0' and comment.staff_id=staffs.id and comment.staff_id={$staff_id} order by comment.id desc limit ".($page-1)*$per_page.",".$per_page;
+        where comment.staff_id=staffs.id and comment.staff_id={$staff_id} order by comment.id desc limit ".($page-1)*$per_page.",".$per_page;
         // echo $sql;
         $query = $this->db->query($sql);
         $array =$query->result_array(); 
@@ -57,8 +57,18 @@ class CommentModel extends CI_Model{
         return $row["count(*)"];
     }
 
+    public function comment_info($comment_id)
+    {
+        $sql = "select * from comment where id='{$comment_id}'";
+        $query = $this->db->query($sql);
+        $row = $query->row_array();
+        return $row;
+    }
+
     public function comment_del($comment_id)
     {
+        $this->db->query("delete from comment where reply={$comment_id}"); 
+
         $sql="delete from comment where id={$comment_id}";
         $query = $this->db->query($sql);
         return $query;

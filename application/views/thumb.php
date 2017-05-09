@@ -46,6 +46,13 @@
   #QuacorGrading span{position: relative;top:5px;}
   #starimg{background:url(/images/grading.png) no-repeat scroll right center;
     cursor:pointer;height:30px;width:30px;padding:0;border:0;background-position:left center}
+
+  body{ 
+    background:url(/header/<?=$thumb_bg?>); 
+    background-position:top center; 
+    background-size:100% 100%;
+    background-repeat:no-repeat; 
+  }
   </style>
 
 </head>
@@ -58,10 +65,13 @@
 
 <!-- 页面内容 开发时删除 -->
 <div class="am-g am-g-fixed am-margin-top">
+
+  <?php if (!isset($_SESSION["admin_login_name"])){ ?>
   <div class="am-u-sm-12">
     <h1>您好,<?=$wx_name?></h1>
-    <h2>欢迎您对我们的员工进行点赞!</h1>
+    <h2><?=$welcome?></h1>
 
+    <img src="/header/<?=$header?>" alt="" width="100" height="100">
     <h2>您正在评价是<font color="red"><b>“<?=$name?>”</b></font><h2>
   </div>
 
@@ -88,7 +98,13 @@
     </filedset>
   </form>
     <p><button type="button" class="am-btn am-btn-default" onclick="onSubmit(this);">提交</button></p>
-
+  <?php }else{?>
+  <div class="am-u-sm-12">
+    <div><img src="/header/<?=$header?>" alt="" width="100" height="100"></div>
+    <h2><font color="red"><b>“<?=$name?>”</b></font>的点赞情况</h2>
+  </div>
+  <br><br><br><br> <br><br><br><br>
+  <?php }?>
   <hr>
 
   <ul class="am-comments-list">
@@ -121,7 +137,24 @@
           </div>
           <p><?=$row['text']?></p>
           <?php foreach($row["reply_list"] as $reply){?>
-          <blockquote><?=$reply["text"]?></blockquote>
+          <blockquote style="padding-left: 5px;">
+            <div>
+              <a href="javescript:void(0);"><?=$reply['wx_name']?>:</a><?=$reply["text"]?>
+            </div>
+
+            <div class="am-comment-actions"> 
+              <a href="javascript:void(0);"><i class="am-icon-reply">  回复</i></a>
+
+              <?php if (isset($_SESSION["admin_login_name"])){ ?>
+              <a href="javascript:void(0);" onclick="del(<?=$reply['id']?>);">删除</a>
+              <?php }?>
+
+              <input type="hidden" class="to_name" value="<?=$reply['wx_name']?>">
+              <input type="hidden" class="comment_id" value="<?=$row['id']?>">
+            </div>
+
+            
+          </blockquote>
           <?php }?>
         </div>
         
@@ -130,8 +163,11 @@
         <footer class="am-comment-footer">
           <div class="am-comment-actions">
             <a href="javascript:void(0);"><i class="am-icon-reply">  回复</i></a>
-            <input type="hidden" id="to_name" value="<?=$row['wx_name']?>">
-            <input type="hidden" id="comment_id" value="<?=$row['id']?>">
+            <?php if (isset($_SESSION["admin_login_name"])){ ?>
+            <a href="javascript:void(0);" onclick="del(<?=$row['id']?>);">删除</a>
+            <?php }?>
+            <input type="hidden" class="to_name" value="<?=$row['wx_name']?>">
+            <input type="hidden" class="comment_id" value="<?=$row['id']?>">
           </div>
         </footer>
       </div>
@@ -157,6 +193,15 @@
 </div>
 
 
+<div class="am-modal am-modal-loading am-modal-no-btn" tabindex="-1" id="my-modal-loading">
+  <div class="am-modal-dialog">
+    <div class="am-modal-hd">正在载入...</div>
+    <div class="am-modal-bd">
+      <span class="am-icon-spinner am-icon-spin"></span>
+    </div>
+  </div>
+</div>
+
 
 <footer class="am-margin-top">
   <hr/>
@@ -178,6 +223,7 @@
 <script src="/assets/js/amazeui.min.js"></script>
 
 <script type="text/javascript">
+  <?php if (!isset($_SESSION["admin_login_name"])){ ?>
   var GradList = document.getElementById("QuacorGrading").getElementsByTagName("input");
 
   for(var di=0;di<parseInt(document.getElementById("QuacorGradingValue").getElementsByTagName("font")[0].innerHTML);di++){
@@ -201,6 +247,8 @@
   {
     $("#thumb_value").val($(button).val());
   }
+
+  <?php }?>
   
   function onSubmit(button) {
     $(button).attr('disabled', "true");
@@ -210,15 +258,15 @@
     });
   }
 
-/**/
+
   $('.am-icon-reply').on('click',function(){
-     var to_name = $(this).parent().parent().children("#to_name").val();
+     var to_name = $(this).parent().parent().children(".to_name").val();
      if (to_name)
      {
        $(".am-modal-dialog p").html("回复"+to_name+":");
      }
      
-     var comment_id = $(this).parent().parent().children("#comment_id").val();;
+     var comment_id = $(this).parent().parent().children(".comment_id").val();
 
      $('#my-prompt').modal({
         relatedTarget: this,
@@ -232,16 +280,38 @@
             $.post('/staff/replay_req/'+comment_id,{text:"回复"+to_name+":"+e.data},function(data){
               if(data=="1")
               {
-                location='/staff/thumb/<?=$staff_id?>#'+comment_id;
+                window.location.reload(); 
               }
             });
+            
+            $("#my-modal-loading").modal({target: '#my-modal-loading'});
         },
         onCancel: function(e) {
             // alert('不想说!');
         }
     });
   });
-    
+
+  var loading=false;
+  function del(comment_id)
+  {
+    if (loading == true) {
+      return;
+    }
+
+    if (confirm('确定删除?')) {
+      loading = true;
+      $.get("/admin/comment_del_req/"+comment_id, function(data) {
+        if (data == "0") {
+          alert("删除失败，数据库异常");
+          loading = false;
+        } else {
+          window.location.reload();
+        }
+      });
+    }
+
+  } 
 </script>
 
 </body>

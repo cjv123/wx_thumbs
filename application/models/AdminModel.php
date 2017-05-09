@@ -22,4 +22,19 @@ class AdminModel extends CI_Model{
         $row = $query->row_array();
         return $row;
     }
+
+    public function setting_save($welcome,$thumb_limit,$bgFileName)
+    {
+        $sql = "update setting set welcome='{$welcome}',thumb_limit='{$thumb_limit}',thumb_bg='{$bgFileName}' where id=1";
+        $query = $this->db->query($sql);
+        return $query;
+    }
+
+    public function get_setting()
+    {
+        $sql = "select * from setting where id=1";
+        $query = $this->db->query($sql);
+        $row = $query->row_array();
+        return $row;
+    }
 }

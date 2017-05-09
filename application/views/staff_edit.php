@@ -20,7 +20,7 @@
       <ul>
         <li class="active"><a href="/admin/staff_list">员工</a></li>
         <li><a href="/admin/shop_list">分店</a></li>
-        <li><a href="/admin/admin_update">后台管理员</a></li>
+        <li><a href="/admin/setting">设置</a></li>
         <li>
           <a href="#"></a>
         </li>
