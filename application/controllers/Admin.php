@@ -316,7 +316,7 @@ class Admin extends CI_Controller{
             QRcode::png($value, "qrcode/".$filename.".png", $errorCorrectionLevel, $matrixPointSize);
         }
         
-        @unlink('downloade/code_'.$shop_id.'.zip');
+        @unlink('download/code_'.$shop_id.'.zip');
         $download_filename ='download/code_'.$shop_id.'.zip';
         $zip=new ZipArchive();
         if($zip->open($download_filename, ZipArchive::CREATE)=== TRUE)
