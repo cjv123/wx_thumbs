@@ -35,6 +35,14 @@
   <div class="mainpage">
     <div class="contant">
       <!--左侧开始-->
+      <div class="layout-sidebar">
+        <div class="box">
+          <ul class="ui-list leftclick">
+            <li><a href="/admin/shop_list">设置</a></li>
+            <li class="active"><a href="/admin/admin_update">管理员密码</a></li>
+          </ul>
+        </div>
+      </div>
 
       <!--右侧开始-->
       <div class="layout-main">

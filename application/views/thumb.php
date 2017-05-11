@@ -71,7 +71,9 @@
     <h1>您好,<?=$wx_name?></h1>
     <h2><?=$welcome?></h1>
 
+    <?php if($header){?>
     <img src="/header/<?=$header?>" alt="" width="100" height="100">
+    <?php }?>
     <h2>您正在评价是<font color="red"><b>“<?=$name?>”</b></font><h2>
   </div>
 
@@ -100,7 +102,9 @@
     <p><button type="button" class="am-btn am-btn-default" onclick="onSubmit(this);">提交</button></p>
   <?php }else{?>
   <div class="am-u-sm-12">
+    <?php if($header){?>
     <div><img src="/header/<?=$header?>" alt="" width="100" height="100"></div>
+    <?php }?>
     <h2><font color="red"><b>“<?=$name?>”</b></font>的点赞情况</h2>
   </div>
   <br><br><br><br> <br><br><br><br>
