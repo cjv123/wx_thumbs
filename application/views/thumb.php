@@ -285,7 +285,7 @@
               if(data=="1")
               {
                 // window.location.reload(); 
-                window.location.href = window.location.href + '?timestamp=' + date_obj.getTime(); 
+                window.location.href = window.location.href + '?timestamp=' + 10000*Math.random(); 
               }
             });
             
