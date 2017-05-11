@@ -284,7 +284,8 @@
             $.post('/staff/replay_req/'+comment_id,{text:"回复"+to_name+":"+e.data},function(data){
               if(data=="1")
               {
-                window.location.reload(); 
+                // window.location.reload(); 
+                window.location.href = window.location.href + '?timestamp=' + date_obj.getTime(); 
               }
             });
             
