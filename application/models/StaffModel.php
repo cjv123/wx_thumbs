@@ -2,8 +2,8 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class StaffModel extends CI_Model{
-	public $wx_appid="";
-	public $wx_appsecret="";
+	public $wx_appid="wxbf6521c0bb17feef";
+	public $wx_appsecret="ab4e6a8fdd5d2107e4aecbcb3ea74e4a";
 
     public function __construct()
     {
