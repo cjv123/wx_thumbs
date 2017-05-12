@@ -96,7 +96,7 @@
           <textarea name="text" class="" rows="5" id="doc-ta-1"></textarea>
           <input name="star" id="thumb_value" type="hidden" value="3" />          
           <input name="wx_name" id="wx_name" type="hidden" value="<?=$wx_name?>" />          
-          <input name="wx_openid" id="wx_name" type="hidden" value="<?=$wx_openid?>" />          
+          <input name="wx_openid" id="wx_openid" type="hidden" value="<?=$wx_openid?>" />          
         </div>
     </filedset>
   </form>

@@ -51,7 +51,7 @@
 <!-- 页面内容 开发时删除 -->
 <div class="am-g am-g-fixed am-margin-top">
   <div class="am-u-sm-12">
-    <h1
+    <h1>
     <?php 
     if ($ret){
       echo "提交成功！";

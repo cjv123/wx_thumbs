@@ -10,7 +10,7 @@ class CommentModel extends CI_Model{
     
     public function comment_add($star,$text,$staff_id,$wx_name,$replay="0",$wx_openid="") 
     {
-        $sql="insert into comment values('','{$star}','{$text}','','','{$staff_id}','{$replay}','{$wx_name}',".time().",{$wx_openid})";
+        $sql="insert into comment values('','{$star}','{$text}','','','{$staff_id}','{$replay}','{$wx_name}',".time().",'{$wx_openid}')";
         $query = $this->db->query($sql);
         return $query;
     }
@@ -87,7 +87,7 @@ class CommentModel extends CI_Model{
         $sql="select count(*) from comment where wx_openid='{$wx_openid}' and staff_id='{$staff_id}'";
         $query=$this->db->query($sql);
         $row = $query->row_array();
-        $count = $row["count"];
+        $count = $row["count(*)"];
 
         $this->load->model("AdminModel");
         $setting = $this->AdminModel->get_setting();
