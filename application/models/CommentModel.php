@@ -75,9 +75,9 @@ class CommentModel extends CI_Model{
     }
 
 
-    public function comment_replay($text,$wx_name,$replay)
+    public function comment_replay($text,$wx_name,$replay,$wx_openid="")
     {
-        $sql="insert into comment values('','','{$text}','','','0','{$replay}','{$wx_name}',".time().")";
+        $sql="insert into comment values('','','{$text}','','','0','{$replay}','{$wx_name}',".time().",'{$wx_openid}')";
         $query = $this->db->query($sql);
         return $query;
     }
