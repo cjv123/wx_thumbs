@@ -51,7 +51,20 @@
 <!-- 页面内容 开发时删除 -->
 <div class="am-g am-g-fixed am-margin-top">
   <div class="am-u-sm-12">
-    <h1><?php if ($ret){echo "提交成功！";}else{echo "提交失败！可能数据库出现异常!";}?></h1>
+    <h1
+    <?php 
+    if ($ret){
+      echo "提交成功！";
+    }
+    elseif($ret=="-2"){
+      echo "对不起，您已经评价过这个员工了!";
+    }
+    else
+    {
+      echo "提交失败！可能数据库出现异常!";
+    }
+    ?>
+    </h1>
     <a href="/staff/thumb/<?=$staff_id?>">返回</a>
   </div>
 </div>

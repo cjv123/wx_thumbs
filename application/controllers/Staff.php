@@ -57,6 +57,7 @@ class Staff extends CI_Controller{
 		}
 
 		$wx_name="";
+		$wx_openid="";
 		if ($token)
 		{
 			$url = "https://api.weixin.qq.com/sns/userinfo?access_token={$token}&openid={$openid}&lang=zh_CN";
@@ -67,6 +68,10 @@ class Staff extends CI_Controller{
 			{
 				$wx_name = $res_arr["nickname"];
 			}
+			if (isset($res_arr["openid"]))
+			{
+				$wx_openid=$res_arr["openid"];
+			}
 		}
 		
 		if($wx_name=="")
@@ -74,7 +79,7 @@ class Staff extends CI_Controller{
 			$wx_name="user_".(time()+rand());
 		}
 		
-		return $wx_name;
+		return array("wx_name"=>$wx_name,"wx_openid"=>$wx_openid);
 	}
 
 
@@ -85,8 +90,21 @@ class Staff extends CI_Controller{
 			return;
 		}
 		$this->load->model("StaffModel");
-		$wx_name = $this->_get_wxname();
-		$_SESSION["wx_name"]=$wx_name;
+		$wx_name="";
+		$wx_openid="";
+		if (isset($_SESSION["wx_name"]) && $_SESSION["wx_name"]!="")
+		{
+			$wx_name = $_SESSION["wx_name"];
+			$wx_openid = $_SESSION["wx_openid"];
+		}
+		else
+		{
+			$wx_info = $this->_get_wxname();
+			$wx_name = $wx_info["wx_name"];
+			$wx_openid = $wx_info["wx_openid"];
+			$_SESSION["wx_name"]=$wx_name;
+			$_SESSION["wx_openid"]=$wx_openid;
+		}
 		// print_r($wx_name);
 
 		$this->load->model("CommentModel");
@@ -103,6 +121,7 @@ class Staff extends CI_Controller{
 			$data["list"][$i]["reply_list"]=$reply_list;
 		}
 		$data["wx_name"]=$wx_name;
+		$data["wx_openid"]=$wx_openid;
 		$this->load->model("AdminModel");
 		$admin_setting = $this->AdminModel->get_setting();
 		$data["welcome"]=$admin_setting["welcome"];
@@ -123,9 +142,19 @@ class Staff extends CI_Controller{
 		$preg = "/<script[\s\S]*?<\/script>/i";
 		$text = preg_replace($preg,"",$text,3); 
 		$wx_name = $this->input->post("wx_name");
+		$wx_openid = $this->input->post("wx_openid");
 		$this->load->model("CommentModel");
-		$ret = $this->CommentModel->comment_add($star,$text,$staff_id,$wx_name);
-		echo $ret;
+		$limit = $this->CommentModel->check_comment_limit($wx_openid,$staff_id);
+		if ($limit)
+		{
+			$ret = $this->CommentModel->comment_add($star,$text,$staff_id,$wx_name,$wx_openid);
+			echo $ret;
+		}
+		else
+		{
+			echo "-2";//超出限制
+		}
+
 		// header("Location:/staff/thumb_res/".$ret);
 	}
 	
