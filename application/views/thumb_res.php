@@ -53,7 +53,7 @@
   <div class="am-u-sm-12">
     <h1>
     <?php 
-    if ($ret){
+    if ($ret=="1"){
       echo "提交成功！";
     }
     elseif($ret=="-2"){

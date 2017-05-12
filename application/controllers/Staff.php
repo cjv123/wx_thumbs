@@ -144,7 +144,11 @@ class Staff extends CI_Controller{
 		$wx_name = $this->input->post("wx_name");
 		$wx_openid = $this->input->post("wx_openid");
 		$this->load->model("CommentModel");
-		$limit = $this->CommentModel->check_comment_limit($wx_openid,$staff_id);
+		$limit = true;
+		if ($wx_openid!="")
+		{
+			$limit = $this->CommentModel->check_comment_limit($wx_openid,$staff_id);
+		}
 		if ($limit)
 		{
 			$ret = $this->CommentModel->comment_add($star,$text,$staff_id,$wx_name,"0",$wx_openid);
