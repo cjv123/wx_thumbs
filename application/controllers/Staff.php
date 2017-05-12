@@ -147,7 +147,7 @@ class Staff extends CI_Controller{
 		$limit = $this->CommentModel->check_comment_limit($wx_openid,$staff_id);
 		if ($limit)
 		{
-			$ret = $this->CommentModel->comment_add($star,$text,$staff_id,$wx_name,$wx_openid);
+			$ret = $this->CommentModel->comment_add($star,$text,$staff_id,$wx_name,"0",$wx_openid);
 			echo $ret;
 		}
 		else
