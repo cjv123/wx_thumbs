@@ -92,7 +92,7 @@
             </form>
             <div class="submit-box">
               <iframe src="" width="0" height="0" frameborder="0" name="action_frame"></iframe>
-              <input name="submit" value="确定保存" tabindex="3" onclick="onSubmit(this)" type="submit" class="ufi-button" />
+              <input name="submit" id="submit" value="确定保存" tabindex="3" onclick="onSubmit(this)" type="submit" class="ufi-button" />
               <span style="display:none" id="loading"><img width="20" height="20" src="/images/loading.gif" alt=""></span>
               <span id="alert"><span>
             </div>

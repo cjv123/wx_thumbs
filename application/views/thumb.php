@@ -69,8 +69,8 @@
   <?php if (!isset($_SESSION["admin_login_name"])){ ?>
   <div class="am-u-sm-12">
     <h1>您好,<?=$wx_name?></h1>
-    <h2><?=$welcome?></h1>
-
+    <h2><?=$welcome?></h2>
+    <h1>分店:<?=$shop_name?></h1>
     <?php if($header){?>
     <img src="/header/<?=$header?>" alt="" width="100" height="100">
     <?php }?>

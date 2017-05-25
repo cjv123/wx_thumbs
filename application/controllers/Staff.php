@@ -34,7 +34,7 @@ class Staff extends CI_Controller{
 	{
 		if (isset($_SESSION["admin_login_name"]))
 		{
-			return "店长";
+			return array("wx_name"=>"店长","wx_openid"=>"0");
 		}
 
 		$wx_appid = $this->StaffModel->wx_appid;

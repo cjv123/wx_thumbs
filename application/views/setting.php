@@ -74,20 +74,22 @@
                 </tr>
                 <tr class="t1">
                   <td width="70"><span class="title">点赞页背景</span></td>
-                  <td width="650">
+                  <td>
                     <input type="file" name="thumb_bg" id="thumb_bg" />  
                   </td>
                   <td style="vertical-align:inherit"><span class="zhu">建议图片分辨率:640*1136</span></td>
                 </tr>
-                <tr class="t1">
+                <tr class="t1" id="bg_img">
                   <td width="70"><span class="title">背景预览</span></td>
                   <td width="650">
                       <?php if($thumb_bg){?>
                       <img src="/header/<?=$thumb_bg?>" alt="" width="320" height="568">
+                      <input type="button" value="删除背景" onclick="del()" />
                       <?php }?>
                   </td>
                   <td style="vertical-align:inherit"><span class="zhu"></span></td>
                 </tr>
+                      <input type="hidden" name="del_bg" value="0" id="del_bg_id" />
               </table>
             </form>
             <div class="submit-box">
@@ -117,6 +119,11 @@
       $("#loading").show();
       $("#alert").html("");
       $("#set_form").submit();
+    }
+
+    function del(){
+      $("#del_bg_id").val("1");
+      $("#bg_img").remove();
     }
   </script>
 

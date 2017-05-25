@@ -38,7 +38,7 @@
       <div class="layout-sidebar">
         <div class="box">
           <ul class="ui-list leftclick">
-            <li><a href="/admin/shop_list">设置</a></li>
+            <li><a href="/admin/setting">设置</a></li>
             <li class="active"><a href="/admin/admin_update">管理员密码</a></li>
           </ul>
         </div>

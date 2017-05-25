@@ -23,9 +23,18 @@ class AdminModel extends CI_Model{
         return $row;
     }
 
-    public function setting_save($welcome,$thumb_limit,$bgFileName)
+    public function setting_save($welcome,$thumb_limit,$bgFileName="",$del=false)
     {
-        $sql = "update setting set welcome='{$welcome}',thumb_limit='{$thumb_limit}',thumb_bg='{$bgFileName}' where id=1";
+        $bgUpdateSql="";
+        if ($bgFileName)
+        {
+            $bgUpdateSql=",thumb_bg='{$bgFileName}'";
+        }
+        elseif($del==true && $bgFileName=="")
+        {
+            $bgUpdateSql=",thumb_bg=''";
+        }
+        $sql = "update setting set welcome='{$welcome}',thumb_limit='{$thumb_limit}' {$bgUpdateSql} where id=1";
         $query = $this->db->query($sql);
         return $query;
     }

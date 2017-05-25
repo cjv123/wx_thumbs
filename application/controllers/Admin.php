@@ -37,7 +37,11 @@ class Admin extends CI_Controller{
         }
         fputcsv($file,$field);
         foreach ($staff_list as $row) {
-            $linestr=array($row["name"],$row["job"],$row["shop_name"],$row["star_avg"]);
+            $name=iconv("utf-8","gb2312",$row["name"]);
+            $job=iconv("utf-8","gb2312",$row["job"]);
+            $shop_name=iconv("utf-8","gb2312",$row["shop_name"]);
+            $star_avg=iconv("utf-8","gb2312",$row["star_avg"]);
+            $linestr=array($name,$job,$shop_name,$star_avg);
             fputcsv($file,$linestr);
         }
         fclose($file);
@@ -212,7 +216,7 @@ class Admin extends CI_Controller{
         else
         {
             $uploadOK=true;
-            if (isset($_FILES["head"]["name"]))
+            if (isset($_FILES["head"]["name"]) && $_FILES["head"]["name"]!="")
             {
                 if ((($_FILES["head"]["type"] == "image/gif")
                     || ($_FILES["head"]["type"] == "image/jpeg")
@@ -255,9 +259,12 @@ class Admin extends CI_Controller{
         echo "<script>\$(\"#alert\",parent.document).html(\"{$out['msg']}\");</script>";
         if ($out["ret"]==0)
         {
-            echo "<script>\$(\"#name\",parent.document).val('');</script>";
+            // echo "<script>\$(\"#name\",parent.document).val('');</script>";
             echo "<script>\$(\"#alert\",parent.document).css('color','#00ff00');</script>";
-            echo "<script>\$(\"#img_head\",parent.document).attr('src','/header/{$headerFilename}');</script>";
+            if($headerFilename!="")
+            {
+                echo "<script>\$(\"#img_head\",parent.document).attr('src','/header/{$headerFilename}');</script>";
+            }
         }
         else
         {
@@ -558,6 +565,9 @@ class Admin extends CI_Controller{
     {
         $welcome=$this->input->post("welcome");
         $thumb_limit=$this->input->post("thumb_limit");
+        $del_bg=$this->input->post("del_bg");
+        $del=($del_bg=="1")?true:false;
+
         
         $this->load->model("AdminModel");
         
@@ -579,7 +589,7 @@ class Admin extends CI_Controller{
         {
             $uploadOK=true;
             $bgFileName="";
-            if ($_FILES["thumb_bg"]["name"])
+            if ($_FILES["thumb_bg"]["name"] && $_FILES["thumb_bg"]["name"]!="")
             {
                 if ((($_FILES["thumb_bg"]["type"] == "image/gif")
                     || ($_FILES["thumb_bg"]["type"] == "image/jpeg")
@@ -601,7 +611,7 @@ class Admin extends CI_Controller{
 
             if ($uploadOK==true)
             {
-                $ret = $this->AdminModel->setting_save($welcome,$thumb_limit,$bgFileName);
+                $ret = $this->AdminModel->setting_save($welcome,$thumb_limit,$bgFileName,$del);
                 if (!$ret)
                 {
                     $out["ret"]=1;
