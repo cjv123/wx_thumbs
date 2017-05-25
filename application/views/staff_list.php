@@ -80,6 +80,7 @@
                 <tr class="trhover">
                   <td><span class="gray">头像</span></td>
                   <td><span class="gray">姓名</span></td>
+                  <td><span class="gray">性别</span></td>
                   <td><span class="gray">所在分店</span></td>
                   <td><span class="gray">职位</span></td>
                   <td><span class="gray">平均评分</span></td>
@@ -91,6 +92,7 @@
                     <td><?php if($item["header"]){?> <img width="100" height="100" src="/header/<?=$item["header"]?>" alt=""> <?php }?></td>
                     <td title="姓名">
                       <?=$item["name"]?><i class="pcm_pc"></i></td>
+                    <td title="性别"><?=($item["sex"]==0)?"男":"女"?></td>
                     <td title="所在分店">
                       <?=$item["shop_name"]?><i class="pcm_pc"></i>
                     </td>

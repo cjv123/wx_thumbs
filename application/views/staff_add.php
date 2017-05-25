@@ -70,6 +70,16 @@
                   </td>
                   <td style="vertical-align:inherit"><span class="zhu">*</span></td>
                 </tr>
+
+                <tr class="t1">
+                  <td width="70"><span class="title">性别</span></td>
+                  <td width="650">
+                    <input name="sex" type="radio" value="0" checked />男 &nbsp;
+                    <input name="sex" type="radio" value="1" />女
+                  </td>
+                  <td style="vertical-align:inherit"><span class="zhu">*</span></td>
+                </tr>
+
                 <tr class="t1">
                   <td width="70"><span class="title">职位</span></td>
                   <td width="650">

@@ -25,9 +25,9 @@ class StaffModel extends CI_Model{
         return $url;
     }
     
-    public function staff_add($name,$des,$job,$shopId,$headerFilename)
+    public function staff_add($name,$des,$job,$shopId,$headerFilename,$sex=0)
     {
-        return $this->db->query("insert into staffs values('','{$name}','{$des}','{$job}','{$shopId}','{$headerFilename}')");
+        return $this->db->query("insert into staffs values('','{$name}','{$des}','{$job}','{$shopId}','{$headerFilename}','{$sex}')");
     }
     
     public function staff_list($page=1,$per_page=20,$searchName="",$search_shop_id="")
@@ -85,14 +85,14 @@ class StaffModel extends CI_Model{
         return $query->row_array();
     }
     
-    public function staff_update($staffId,$name,$des,$job,$shopId,$headerFilename="")
+    public function staff_update($staffId,$name,$des,$job,$shopId,$headerFilename="",$sex="0")
     {
         $headerUpdateSql="";
         if ($headerFilename)
         {
             $headerUpdateSql=",header='{$headerFilename}'";
         }
-        $sql ="update staffs set name='{$name}',des='{$des}',job='{$job}',shop_id='{$shopId}'{$headerUpdateSql} where id={$staffId}";
+        $sql ="update staffs set name='{$name}',des='{$des}',job='{$job}',sex='{$sex}',shop_id='{$shopId}'{$headerUpdateSql} where id={$staffId}";
         return $this->db->query($sql);
     }
     

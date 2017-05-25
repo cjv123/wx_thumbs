@@ -65,7 +65,7 @@ class Admin extends CI_Controller{
         $params=array('total'=>$total,'per_page'=>$per_page,'page'=>$page);
         $this->load->library('Page_cjv',$params);
         
-        $this->page_cjv->url="/admin/shop_list/";
+        $this->page_cjv->url="/admin/staff_list/";
         $data["pager"]=$this->page_cjv->show();
         $data["page"]=$page;
         $data["search_name"]=$search_name;
@@ -105,6 +105,7 @@ class Admin extends CI_Controller{
         $des="";
         $job=$this->input->post("job");
         $shopId=$this->input->post("shop");
+        $sex= $this->input->post("sex");
         
         $this->load->model("StaffModel");
         
@@ -152,7 +153,7 @@ class Admin extends CI_Controller{
             if ($uploadOK==true)
             {
                 $this->load->model("StaffModel");
-                $ret = $this->StaffModel->staff_add($name,$des,$job,$shopId,$headerFilename);
+                $ret = $this->StaffModel->staff_add($name,$des,$job,$shopId,$headerFilename,$sex);
                 if (!$ret)
                 {
                     $out["ret"]=1;
@@ -192,6 +193,7 @@ class Admin extends CI_Controller{
         $des="";
         $job=$this->input->post("job");
         $shopId=$this->input->post("shop");
+        $sex=$this->input->post("sex");
         
         $this->load->model("StaffModel");
 
@@ -245,7 +247,7 @@ class Admin extends CI_Controller{
             if ($uploadOK==true)
             {
                 $this->load->model("StaffModel");
-                $ret = $this->StaffModel->staff_update($staff_id,$name,$des,$job,$shopId,$headerFilename);
+                $ret = $this->StaffModel->staff_update($staff_id,$name,$des,$job,$shopId,$headerFilename,$sex);
                 if (!$ret)
                 {
                     $out["ret"]=1;
